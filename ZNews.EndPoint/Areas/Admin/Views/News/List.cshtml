@@ -1,0 +1,222 @@
+﻿@addTagHelper *, LazZiya.TagHelpers
+@using MD.PersianDateTime.Core;
+@using ZNews.Application.Services.News.Queries.GetNewsForAdmin
+@model PagingResultGetNewsForAdminDto
+@{
+    ViewData["Title"] = "لیست اخبار";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+<div class="content-wrapper">
+    <div class="container-fluid">
+        <!-- Zero configuration table -->
+        <section id="configuration">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title-wrap bar-success">
+                                <h4 class="card-title">لیست خبر ها</h4>
+                            </div>
+                        </div>
+                        <div class="card-body collapse show">
+                            <div class="card-block card-dashboard">
+                                <a class="btn btn-success" href="~/Admin/News/Add">افزودن خبر جدید</a>
+                                <div id="DataTables_Table_0_wrapper" class="dataTables_wrapper container-fluid dt-bootstrap4">
+                                    <div class="row">
+                                        <div class="col-xl-8 col-sm-12 col-md-6">
+                                            <div class="dataTables_length" id="DataTables_Table_0_length">
+                                                <div id="DataTables_Table_0_filter" class="dataTables_filter">
+                                                    <form method="get">
+                                                        <div class="col-xl-6 col-lg-6 col-md-12 mb-1">
+                                                            <fieldset class="form-group">
+                                                                <label for="basicInput"><b> عنوان خبر :</b></label>
+                                                                <input type="text" class="form-control" name="SearchKey">
+                                                                <br />
+                                                                <button class="btn btn-success">جستوجو</button>
+                                                            </fieldset>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <p>
+                                            <b>مرتب سازی براساس</b>
+                                            <a href="~/Admin/News/List?ordering=@Ordering.Newest" class="btn mr-1 btn-secondary">جدیدترین ها</a>
+                                            <a href="~/Admin/News/List?ordering=@Ordering.Oldest" class="btn mr-1 btn-secondary">قدیمی ترین ها</a>
+                                            <a href="~/Admin/News/List?ordering=@Ordering.MostControversial" class="btn mr-1 btn-secondary">پربحث ترین ها</a>
+                                            <a href="~/Admin/News/List?ordering=@Ordering.MostVisited" class="btn mr-1 btn-secondary">پربازدید ترین ها</a>
+                                            <a href="~/Admin/News/List?ordering=@Ordering.AddedBSlider" class="btn mr-1 btn-secondary">اضافه شده ها به اسلایدر</a>
+                                            <a href="~/Admin/News/List?ordering=@Ordering.Disabled" class="btn mr-1 btn-secondary">غیرفعال ها</a>
+                                        </p>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <table class="table table-striped dataTables_scrollHeadInner zero-configuration dataTable" id="DataTables_Table_0" role="grid" aria-describedby="DataTables_Table_0_info">
+                                                <thead>
+                                                    <tr role="row">
+                                                        <th class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="ایمیل: activate to sort column ascending" style="width: 101px;">کد خبر</th>
+                                                        <th class="sorting_asc" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-sort="ascending" aria-label="نام: activate to sort column descending" style="width: 210px;">عنوان خبر</th>
+                                                        <th class="sorting_asc" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-sort="ascending" aria-label="نام: activate to sort column descending" style="width: 150px;">دسته بندی</th>
+                                                        <th class="sorting_asc" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-sort="ascending" aria-label="نام: activate to sort column descending" style="width: 170px;">برچسب ها</th>
+                                                        <th class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="ایمیل: activate to sort column ascending" style="width: 101px;">بازدید</th>
+                                                        <th class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="ایمیل: activate to sort column ascending" style="width: 101px;">تعداد کامنت</th>
+                                                        <th class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="ایمیل: activate to sort column ascending" style="width: 170px;">تاریخ و ساعت ثبت</th>
+                                                        <th class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="ایمیل: activate to sort column ascending"></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach (var item in Model.News)
+                                                    {
+                                                    <tr>
+                                                        <th>@item.Id</th>
+                                                        <th>@item.Title</th>
+                                                        <th>@item.CategoryName</th>
+                                                        <th>
+                                                            @foreach (var i in item.Tags)
+                                                            {
+                                                            <p><b class="icon-tag" style="color:red;"></b><b>  </b>   @i.Name</p>
+                                                            }
+                                                        </th>
+                                                        <th>@item.Views</th>
+                                                        <th>@item.CommentsNumber</th>
+                                                        <th>
+                                                            @{
+                                                                    PersianDateTime p = new PersianDateTime(item.InsertTime);
+                                                                    var insertTime = p.ToLongDateTimeString();
+                                                            }
+                                                            @insertTime
+                                                        </th>
+                                                        <th>
+                                                            <a class="btn btn-info" href="~/Admin/Users/ProfileUserForAdmin?UserGuid=@item.UserGuid" target="_blank">پروفایل خبر نویس</a>
+                                                            <a class="btn btn-success" href="~/Admin/News/Detail?NewsId=@item.Id" target="_blank">نمایش خبر</a>
+                                                            @if (item.IsActive == true)
+                                                                {
+                                                            <a class="btn btn-warning" onclick="StatusChange(@item.Id)">غیرفعال</a>
+                                                                }
+                                                                else
+                                                                {
+                                                            <a class="btn btn-info" onclick="StatusChange(@item.Id)">فعال</a>
+                                                                }
+                                                            @if (item.IsSlider == true)
+                                                                {
+                                                            <a class="btn btn-grey" onclick="SliderChanges(@item.Id)">کنار گذاشتن از اسلایدر</a>
+                                                                }
+                                                                else
+                                                                {
+                                                            <a class="btn btn-success" onclick="SliderChanges(@item.Id)">افزودن به اسلایدر</a>
+                                                                }
+                                                            <a class="btn btn-red " onclick="remove(@item.Id)">حذف</a>
+                                                        </th>
+                                                    </tr>
+                                                    }
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-12 col-md-5">
+                                            <div class="dataTables_info" id="DataTables_Table_0_info" role="status" aria-live="polite">(@Model.NewsCount) سطرها</div>
+                                        </div>
+                                        <paging page-no="@Model.CurrentPage"
+                                                page-size="@Model.PageSize"
+                                                total-records="@Model.NewsCount"
+                                                show-first-last="true"
+                                                show-prev-next="true"
+                                                show-first-numbered-page="true"
+                                                show-last-numbered-page="true"
+                                                query-string-key-page-no="CurrentPage"
+                                                query-string-key-page-size="PageSize"
+                                                query-string-value="@(Context.Request.QueryString.Value)"></paging>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+@section Scripts
+{
+    <link href="~/lib/Sweetalert2/Sweetalert2.css" rel="stylesheet" />
+    <script src="~/lib/Sweetalert2/Sweetalert2.js"></script>
+    <script>
+        function StatusChange(id) {
+            var postData = {
+                'NewsId': id
+            };
+            $.ajax({
+                contentType: 'application/x-www-form-urlencoded',
+                dataType: 'JSON',
+                type: "POST",
+                data: postData,
+                url: "/Admin/News/StatusChange",
+                success: function (data) {
+                    if (data.isSuccess == true) {
+                        swal.fire('موفق', data.message, 'success').then(() => { window.location.reload(); });
+                    }
+                    else {
+                        swal.fire('ناموفق', data.message, 'warning');
+                    }
+                },
+
+            });
+        }
+        function SliderChanges(id) {
+            var postData = {
+                'NewsId': id
+            };
+            $.ajax({
+                contentType: 'application/x-www-form-urlencoded',
+                dataType: 'JSON',
+                type: "POST",
+                data: postData,
+                url: "/Admin/News/SliderChanges",
+                success: function (data) {
+                    if (data.isSuccess == true) {
+                        swal.fire('موفق', data.message, 'success').then(() => { window.location.reload(); });
+                    }
+                    else {
+                        swal.fire('ناموفق', data.message, 'warning');
+                    }
+                },
+
+            });
+        }
+        function remove(id) {
+            swal.fire({
+                title: 'حذف خبر',
+                text: 'آیا خبر مورد نظر حذف شود؟',
+                type: 'info',
+                confirmButtonText: 'بله ، حذف شود',
+                cancelButtonText: 'خیر',
+                showCancelButton: true,
+                cancelButtonColor: "#DD6B55",
+                confirmButtonColor: "#DD6B55",
+            }).then((result) => {
+                if (result.value) {
+                    var postData = {
+                        'NewsId': id
+                    };
+                    $.ajax({
+                        contentType: 'application/x-www-form-urlencoded',
+                        dataType: 'JSON',
+                        type: "POST",
+                        data: postData,
+                        url: "/Admin/News/Remove",
+                        success: function (data) {
+                            if (data.isSuccess == true) {
+                                swal.fire('موفق', data.message, 'success').then(() => { window.location.reload(); });
+                            }
+                            else {
+                                swal.fire('ناموفق', data.message, 'warning');
+                            }
+                        },
+
+                    });
+                }
+            });
+        }
+    </script>
+}

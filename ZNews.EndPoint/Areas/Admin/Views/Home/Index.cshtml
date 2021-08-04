@@ -1,0 +1,151 @@
+﻿@using ZNews.EndPoint.Utilities
+@using ZNews.EndPoint.Areas.Admin.Models
+@model HomePageViewsForAdminViewModel
+@{
+    ViewData["Title"] = "صفحه اصلی";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+<h1>داشبورد</h1>
+<br>
+@foreach (var role in ClaimUtility.GetRoles(User))
+{
+    if (role == ZNews.Common.Roles.UserRole.Admin)
+    {
+        <p>آمار بازدید های صفحه اصلی سایت</p>
+        <div class="row match-height col-12">
+            <div class="col-xl-3 col-lg-6 col-12">
+                <div class="card bg-info" style="height: 142px;">
+                    <div class="card-body">
+                        <div class="px-3 py-3">
+                            <div class="row text-dark">
+                                <div class="col-12 text-center pr-0">
+                                    <h4 class="text-dark mb-1">بازدید های امروز</h4>
+                                    <br>
+                                    <h5 class="text-dark">@Model.ToDay</h5>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-lg-6 col-12">
+                <div class="card bg-Secondary" style="height: 142px;">
+                    <div class="card-body">
+                        <div class="px-3 py-3">
+                            <div class="row text-dark">
+                                <div class="col-12 text-center pr-0">
+                                    <h4 class="text-dark mb-1">کل بازدید ها</h4>
+                                    <br>
+                                    <h5 class="text-dark">@Model.All</h5>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+}
+<br>
+<p>ماژول ها</p>
+<div class="row match-height col-12">
+
+    <div class="col-xl-3 col-lg-6 col-12">
+        <div class="card bg-success" style="height: 142px;">
+            <div class="card-body">
+                <div class="px-3 py-3">
+                    <div class="row text-white">
+                        <div class="col-12 text-center pr-0">
+                            <h4><a class="text-white" href="~/Admin/Users/ListUsers">ادمین ها</a></h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-lg-6 col-12">
+        <div class="card bg-danger" style="height: 142px;">
+            <div class="card-body">
+                <div class="px-3 py-3">
+                    <div class="row text-white">
+                        <div class="col-12 text-center pr-0">
+                            <h4><a class="text-white" href="~/Admin/News/List">خبر ها</a></h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-2 col-lg-6 col-12">
+        <div class="card bg-info" style="height: 142px;">
+            <div class="card-body">
+                <div class="px-3 py-3">
+                    <div class="row text-white">
+                        <div class="col-12 text-center pr-0">
+                            <h4><a class="text-white" href="~/Admin/Categories/AddAndList">دسته ها</a></h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-2 col-lg-6 col-12">
+        <div class="card bg-dark" style="height: 142px;">
+            <div class="card-body">
+                <div class="px-3 py-3">
+                    <div class="row text-white">
+                        <div class="col-12 text-center pr-0">
+                            <h4><a class="text-white" href="~/Admin/Tags/AddAndList">تگ ها</a></h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-2 col-lg-6 col-12">
+        <div class="card bg-warning" style="height: 142px;">
+            <div class="card-body">
+                <div class="px-3 py-3">
+                    <div class="row text-white">
+                        <div class="col-12 text-center pr-0">
+                            <h4><a class="text-white" href="~/Admin/Menus/ListMenu">منو ها</a></h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-lg-6 col-12">
+        <div class="card bg-info" style="height: 142px;">
+            <div class="card-body">
+                <div class="px-3 py-3">
+                    <div class="row text-white">
+                        <div class="col-12 text-center pr-0">
+                            <h4><a class="text-white" href="/Admin/Users/ProfileUserForUser?UserGuid=@ViewBag.UserGuid">پروفایل من</a></h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @foreach (var item in ZNews.EndPoint.Utilities.ClaimUtility.GetRoles(User))
+    {
+        if (item == ZNews.Common.Roles.UserRole.Admin)
+        {
+            <div class="col-xl-3 col-lg-6 col-12">
+                <div class="card bg-primary" style="height: 142px;">
+                    <div class="card-body">
+                        <div class="px-3 py-3">
+                            <div class="row text-white">
+                                <div class="col-12 text-center pr-0">
+                                    <h4><a href="/Admin/Users/UserActivitiesForAdmin?UserId=@ViewBag.UserId" class="text-white">فعالیت های من</a></h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+
+</div>

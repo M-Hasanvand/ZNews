@@ -1,0 +1,141 @@
+﻿@using ZNews.Application.Services.Tags.Queries.GetTagsForAddNews;
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewData["Title"] = "افزودن خبر";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+    string d="";
+}
+<section class="basic-elements container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card container-fluid">
+                <div class="card-header">
+                    <div class="card-title-wrap bar-success">
+                        <h4 class="card-title mb-0">اطلاعات خبر جدید را وارد نمایید</h4>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="px-3">
+                        <div class="form">
+                            <div class="form-body">
+                                <div class="row">
+                                    <div class="col-xl-4 col-lg-6 col-md-12 mb-1">
+                                        <fieldset class="form-group">
+                                            <label for="basicInput">عنوان خبر </label>
+                                            <input type="text" s class="form-control" id="title">
+                                        </fieldset>
+                                    </div>
+                                    <div class="col-xl-4 col-lg-6 col-md-12 mb-1">
+                                        <fieldset class="form-group">
+                                            <label for="disabledInput">کاور خبر </label>
+                                            <input type="file" class="form-control" id="cover">
+                                        </fieldset>
+                                    </div>
+                                    <fieldset class="form-group">
+                                        <label for="ShortDescription">خلاصه خبر </label>
+                                        <textarea class="form-control" id="ShortDescription" rows="4"></textarea>
+                                    </fieldset>
+                                    <div class="col-xl-12 col-lg-12 col-md-12 mb-1">
+                                        <fieldset class="form-group">
+                                            <label for="disabledInput">متن خبر</label>
+                                            <textarea id="Description" class=""></textarea>
+                                        </fieldset>
+                                    </div>
+                                    <div class="col-xl-4 col-lg-6 col-md-12 mb-1">
+                                        <fieldset class="form-group">
+                                            <label for="disabledInput">انتخاب دسته بندی </label>
+                                            <select class="form-control" id="category" name="category" asp-items="@ViewBag.Categories"></select>
+                                        </fieldset>
+                                    </div>
+                                    <div class="col-xl-6 col-lg-6 col-md-12 mb-1">
+                                        <fieldset class="form-group">
+                                            <label for="basicSelect">تگ های مرتبط را انتخاب کنید</label>
+                                            @foreach (var item in ViewBag.Tags as List<ResultGetTagsDto>)
+                                            {
+                                                <div class="checkbox">
+                                                    <div class="custom-control custom-checkbox m-0">
+                                                        <input type="checkbox" class="custom-control-input" id="@item.Id" onclick="addTag('@item.Id',@item.Id)">
+                                                        <label class="custom-control-label" for="@item.Id">@item.Name</label>
+                                                    </div>
+                                                </div>
+                                            }
+                                        </fieldset>
+                                    </div>
+                                    <div class="col-xl-12 col-lg-12 col-md-12 mb-1">
+                                        <fieldset class="form-group">
+                                            <br />
+                                            <a onclick="AddNews()" class="btn btn-success col-md-12"> ثبت خبر </a>
+                                        </fieldset>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+@section Scripts
+{
+    <!---------------------Ck------------------------->
+    <script src="~/ckeditor/ckeditor.js"></script>
+    <!---------------------sawl------------------------->
+    <link href="~/lib/Sweetalert2/Sweetalert2.css" rel="stylesheet" />
+    <script src="~/lib/Sweetalert2/Sweetalert2.js"></script>
+    <script>
+        //------------------loadCkEditor--------------------------|
+        CKEDITOR.replace('Description', {
+            language: 'fa',
+            customConfig: '/ckeditor/custom/Config.js'
+        });
+        //------------------SetTags-For-Tag-----------------------|
+        let SetTags = new Set();
+        //------------------AddTag-For-SetTags-------------------|
+        function addTag(tagName, tagId) {
+            $("#" + tagName).on('change', function () {
+                if ((this.checked == true)) {
+                    SetTags.add(tagId);
+                }
+                else {
+                    SetTags.delete(tagId);
+                }
+
+            });
+        }
+        //------------------------fun-AddNews-------------------------|
+        function AddNews() {
+            console.log($("#Description").html());
+            var postData = new FormData();
+            postData.append('Title', $("#title").val());
+            var image = document.getElementById("cover");
+            if (image.files.length > 0) {
+                for (var i = 0; i < image.files.length; i++) {
+                    postData.append('ImageUrl', image.files[i]);
+                }
+            }
+            let arr = Array.from(SetTags);
+            for (let index = 0; index < arr.length; index++) {
+                postData.append("Tags[" + index + "].TagId", arr[index]);
+            }
+            postData.append('ShortDescription', $("#ShortDescription").val());
+            postData.append('Description', $("#Description").val().toString());
+            postData.append('CategoryId', $("#category").find("option:selected").val());
+            $.ajax({
+                contentType: false,
+                processData: false,
+                url: '/Admin/News/Add',
+                type: 'POST',
+                dataType: 'JSON',
+                data: postData,
+                success: function (data) {
+                    if (data.isSuccess == true) {
+                        swal.fire('موفق', data.message, 'success').then(() => { location.replace("/Admin/News/List") });
+                    } else {
+                        swal.fire('ناموفق ', data.message, 'warning');
+                    }
+                }
+            });
+        }
+    </script>
+}

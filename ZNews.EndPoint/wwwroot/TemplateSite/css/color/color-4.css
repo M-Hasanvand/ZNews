@@ -1,0 +1,36 @@
+/*===============================================
+* header css
+================================================*/
+.zm-secondary-menu ul li a:hover, .topbar-sblock a:not(.social-btn):hover, .topbar-sblock a:not(.social-btn):hover i, .login-btn:hover, a:not(.cat-btn):hover, a:not(.cat-btn):focus, a:not(.cat-btn):active,.zm-posts-tab-menu > .nav-tabs > li.active > a, .zm-posts-tab-menu > .nav-tabs > li.active > a:focus, .zm-posts-tab-menu > .nav-tabs > li.active > a:hover, .single-address i, .mega-menu-area .zm-megamenu-sub-tab li.active a, .expand-archive {
+    color: #e67e22 !important;
+}
+
+.bn-title, .zm-tagcloud a:hover, .posts-thumbnails-wrapper.list-unstyled > li::before {
+	background-color: #e67e22 !important
+}
+
+
+/* mange pore */
+.subscribe-form input[type=submit], .subscribe-form input[type=submit], .slider-post-area-content .slide-posts > .owl-controls > .owl-nav > div, .submit-button, .search-form button {
+    background: #e67e22 !important;
+}
+.zm-secondary-menu ul li a:hover, .topbar-sblock a:not(.social-btn):hover, .topbar-sblock a:not(.social-btn):hover i, .login-btn:hover {
+    color: #e67e22 !important;
+}
+.subscribe-form input[type=submit]:hover, #scrollUp:hover {
+    background: #f57809;
+}
+
+/*====================================
+* Post css
+======================================*/
+
+.zm-post-title a:hover,
+.zm-post-title.text-white:hover, .zm-post-title.text-white:hover a, .text-white h1:hover, .text-white p:hover, .text-white h2:hover, .text-white a:not(.cat-btn):hover {
+    color: #e67e22 !important;
+}
+
+.zm-tagcloud a:hover {
+	color: #fff !important;
+}
+

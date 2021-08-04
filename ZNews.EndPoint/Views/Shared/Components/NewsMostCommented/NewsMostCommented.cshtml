@@ -1,0 +1,50 @@
+﻿@using ZNews.Application.Services.News.Queries.GetNewsMostCommentedsForSite
+@model List<ResultGetNewsMostCommentedForSiteDto>
+@{
+    Layout = null;
+}
+<aside class="zm-post-lay-e-area col-md-12 col-sm-6 col-lg-12 mt-60 columns pull-right">
+    <div class="row mb-40">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <div class="section-title">
+                <h2 class="h6 header-color inline-block"> پست های دارای بیشترین نظر </h2>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        @if (Model != null)
+        {
+            @foreach (var itemNewsMost in Model)
+            {
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <div class="zm-posts">
+                        <article class="zm-post-lay-e zm-single-post clearfix">
+                            <div class="zm-post-thumb f-right">
+                                <a href="/News/Detail?NewsId=@itemNewsMost.Id"><img src="~/@itemNewsMost.CoverNews" alt="img"></a>
+                            </div>
+                            <div class="zm-post-dis f-left">
+                                <div class="zm-post-header">
+                                    <h2 class="zm-post-title"><a href="/News/Detail?NewsId=@itemNewsMost.Id"> @itemNewsMost.Title</a></h2>
+                                    <div class="zm-post-meta">
+                                        <ul>
+                                            <li class="s-meta"><a class="zm-author">@itemNewsMost.UserName </a></li>
+                                            <li class="s-meta">
+                                                <a class="zm-date">
+                                                    @{
+                                                        PersianDateTime dateTime = new PersianDateTime(itemNewsMost.InsertTime);
+                                                        var inserTime = dateTime.ToLongDateString();
+                                                    }
+                                                    @inserTime
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+</aside>

@@ -1,0 +1,12 @@
+/*-----------------------------------------------------------------------------------
+
+Template Name: Znews - HTML Magazine Template for Blogging and News Sites. 
+
+NOTE: This is Slider style file. All Slider related style included in this file.
+
+-----------------------------------------------------------------------------------*/
+
+.slider-area > img {
+  height: 100vh;
+  width: 100%;
+}

@@ -1,0 +1,78 @@
+﻿@model NewsSearchAndTagAndCategoryViewModel
+@{
+    ViewData["Title"] = "خبرها";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="zm-section bg-white pt-70 pb-40" style="transform: none;">
+    <div class="container" style="transform: none;">
+        <div class="row pb-30" style="transform: none;">
+            <!-- Start left side -->
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-8 columns pull-right" style="position: relative; box-sizing: border-box; min-height: 0px;">
+
+
+                <div class="theiaStickySidebar" style="padding-top: 0px; padding-bottom: 1px; position: static; top: 0px; left: 549.612px;">
+                    <div class="row">
+                        <div class="zm-posts clearfix">
+                            <!-- Start single post layout A1 -->
+                            @foreach (var itemNews in Model.Data.News)
+                            {
+                                <div class="col-md-6 col-sm-6">
+                                    <article class="zm-post-lay-a1">
+                                        <div class="zm-post-thumb">
+                                            <a href="~/@itemNews.CoverNews"><img src="~/@itemNews.CoverNews" alt="img"></a>
+                                        </div>
+                                        <div class="zm-post-dis">
+                                            <div class="zm-post-header">
+                                                <div class="zm-category"><a href="~/News/Index?CateId=@itemNews.CategoryId" class="bg-cat-3 cat-btn">@itemNews.CategoryName</a></div>
+                                                <h2 class="zm-post-title h2"><a href="/News/Detail?NewsId=@itemNews.Id">@itemNews.Title</a></h2>
+                                                <div class="zm-post-meta">
+                                                    <ul>
+                                                        <li class="s-meta"><a class="zm-author"> @itemNews.UserName </a></li>
+                                                        <li class="s-meta">
+                                                            <a class="zm-date">
+                                                                @{
+                                                                    PersianDateTime dateTimeSlider = new PersianDateTime(itemNews.InsertTime);
+                                                                    var inserTimeNews = dateTimeSlider.ToLongDateString();
+                                                                }
+                                                                @inserTimeNews
+                                                            </a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <div class="zm-post-content">
+                                                <p>@itemNews.ShortDescription</p>
+                                            </div>
+                                        </div>
+                                    </article>
+                                </div>
+                            }
+                            <!-- End single post layout A1 -->
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <paging page-no="@Model.Data.CurrentPage"
+                            page-size="@Model.Data.PageSize"
+                            total-records="@Model.Data.NewsCount"
+                            show-first-last="true"
+                            show-prev-next="true"
+                            show-first-numbered-page="true"
+                            show-last-numbered-page="true"
+                            query-string-key-page-no="CurrentPage"
+                            query-string-key-page-size="PageSize"
+                            query-string-value="@(Context.Request.QueryString.Value)"></paging>
+                </div>
+            </div>
+            <!-- End left side -->
+            <!-- Start Right sidebar -->
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-4 sidebar-warp columns pull-right" style="position: relative; box-sizing: border-box; min-height: 0px;">
+                @await Component.InvokeAsync("NewsMostCommented")
+            </div>
+            <!-- End Right sidebar -->
+        </div>
+    </div>
+</div>
+
+

@@ -1,0 +1,1193 @@
+﻿@using MD.PersianDateTime.Core
+@using ZNews.EndPoint.Areas.Admin.Models.User
+@using ZNews.EndPoint.Utilities;
+@model UserActivitiesViewModel
+@{
+    ViewData["Title"] = "فعالیت های ادمین برای مدیر سایت";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+<section class="basic-elements container-fluid">
+    <div class="row">
+        <div class="col-12">
+            @foreach (var role in ClaimUtility.GetRoles(User))
+            {
+                if (role == ZNews.Common.Roles.UserRole.Admin)
+                {
+                    @*----------------------------------------------*@
+                    @if (Model.ListNews != null)
+                    {
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title-wrap bar-success">
+                                    <h4 class="card-title">لیست خبرها</h4>
+                                </div>
+                            </div>
+                            <div class="card-body collapse show">
+                                <div class="card-block">
+                                    <div id="DataTables_Table_7_wrapper" class="dataTables_wrapper container-fluid dt-bootstrap4">
+                                        <div class="row">
+                                            <div class="col-sm-12 col-md-6">
+                                            </div>
+                                            <div class="col-sm-12 col-md-6">
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <div class="dataTables_scroll">
+                                                    <div class="dataTables_scrollHead" style="overflow: hidden; position: relative; border: 0px; width: 100%;">
+                                                        <div class="dataTables_scrollHeadInner" style="box-sizing: content-box; width: 1114.4px; padding-left: 17px;">
+                                                            <table class="table table-striped table-bordered hide-columns-dynamically dataTable" role="grid" style="margin-left: 0px; width: 1114.4px;">
+                                                                <thead>
+                                                                    <tr role="row">
+                                                                        <th class="sorting_asc" tabindex="0" aria-controls="DataTables_Table_7" rowspan="1" colspan="1" style="width: 153.8px;" aria-sort="ascending" aria-label="نام: activate to sort column descending">کد خبر</th>
+                                                                        <th class="sorting" tabindex="0" aria-controls="DataTables_Table_7" rowspan="1" colspan="1" style="width: 285px;" aria-label="موقعیت: activate to sort column ascending">عنوان خبر</th>
+                                                                        <th class="sorting" tabindex="0" aria-controls="DataTables_Table_7" rowspan="1" colspan="1" style="width: 106.6px;" aria-label="اداره: activate to sort column ascending">دسته بندی</th>
+                                                                        <th class="sorting" tabindex="0" aria-controls="DataTables_Table_7" rowspan="1" colspan="1" style="width: 51.4px;" aria-label="سن: activate to sort column ascending">برچسب ها</th>
+                                                                        <th class="sorting" tabindex="0" aria-controls="DataTables_Table_7" rowspan="1" colspan="1" style="width: 121px;" aria-label="تاریخ شروع: activate to sort column ascending">بازدید ها</th>
+                                                                        <th class="sorting" tabindex="0" aria-controls="DataTables_Table_7" rowspan="1" colspan="1" style="width: 126.8px;" aria-label="حقوق: activate to sort column ascending">تعداد کامنت</th>
+                                                                        <th class="sorting" tabindex="0" aria-controls="DataTables_Table_7" rowspan="1" colspan="1" style="width: 126.8px;" aria-label="حقوق: activate to sort column ascending">تاریخ و ساعت ثبت </th>
+                                                                        <th class="sorting" tabindex="0" aria-controls="DataTables_Table_7" rowspan="1" colspan="1" style="width: 126.8px;" aria-label="حقوق: activate to sort column ascending"></th>
+                                                                    </tr>
+                                                                </thead>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                    <div class="dataTables_scrollBody" style="position: relative; overflow: auto; height: 200px; width: 100%;">
+                                                        <table class="table table-striped table-bordered hide-columns-dynamically dataTable" id="DataTables_Table_7" role="grid" aria-describedby="DataTables_Table_7_info" style="width: 100%;">
+                                                            <thead>
+                                                                <tr role="row" style="height: 0px;">
+                                                                    <th class="sorting" aria-controls="DataTables_Table_7" rowspan="1" colspan="1" style="width: 153.8px; padding-top: 0px; padding-bottom: 0px; border-top-width: 0px; border-bottom-width: 0px; height: 0px;">
+                                                                        <div class="dataTables_sizing" style="height:0;overflow:hidden;">نام</div>
+                                                                    </th>
+                                                                    <th class="sorting" aria-controls="DataTables_Table_7" rowspan="1" colspan="1" style="width: 285px; padding-top: 0px; padding-bottom: 0px; border-top-width: 0px; border-bottom-width: 0px; height: 0px;">
+                                                                        <div class="dataTables_sizing" style="height:0;overflow:hidden;">موقعیت</div>
+                                                                    </th>
+                                                                    <th class="sorting" aria-controls="DataTables_Table_7" rowspan="1" colspan="1" style="width: 106.6px; padding-top: 0px; padding-bottom: 0px; border-top-width: 0px; border-bottom-width: 0px; height: 0px;">
+                                                                        <div class="dataTables_sizing" style="height:0;overflow:hidden;">اداره</div>
+                                                                    </th>
+                                                                    <th class="sorting" aria-controls="DataTables_Table_7" rowspan="1" colspan="1" style="width: 51.4px; padding-top: 0px; padding-bottom: 0px; border-top-width: 0px; border-bottom-width: 0px; height: 0px;">
+                                                                        <div class="dataTables_sizing" style="height:0;overflow:hidden;">سن</div>
+                                                                    </th>
+                                                                    <th class="sorting" aria-controls="DataTables_Table_7" rowspan="1" colspan="1" style="width: 121px; padding-top: 0px; padding-bottom: 0px; border-top-width: 0px; border-bottom-width: 0px; height: 0px;">
+                                                                        <div class="dataTables_sizing" style="height:0;overflow:hidden;">تاریخ شروع</div>
+                                                                    </th>
+                                                                    <th class="sorting" aria-controls="DataTables_Table_7" rowspan="1" colspan="1" style="width: 126.8px; padding-top: 0px; padding-bottom: 0px; border-top-width: 0px; border-bottom-width: 0px; height: 0px;">
+                                                                        <div class="dataTables_sizing" style="height:0;overflow:hidden;">حقوق</div>
+                                                                    </th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tfoot>
+                                                                <tr style="height: 0px;">
+                                                                    <th rowspan="1" colspan="1" style="padding-top: 0px; padding-bottom: 0px; border-top-width: 0px; border-bottom-width: 0px; height: 0px; width: 171.8px;">
+                                                                        <div class="dataTables_sizing" style="height:0;overflow:hidden;">نام</div>
+                                                                    </th>
+                                                                    <th rowspan="1" colspan="1" style="padding-top: 0px; padding-bottom: 0px; border-top-width: 0px; border-bottom-width: 0px; height: 0px; width: 303px;">
+                                                                        <div class="dataTables_sizing" style="height:0;overflow:hidden;">موقعیت</div>
+                                                                    </th>
+                                                                    <th rowspan="1" colspan="1" style="padding-top: 0px; padding-bottom: 0px; border-top-width: 0px; border-bottom-width: 0px; height: 0px; width: 124.6px;">
+                                                                        <div class="dataTables_sizing" style="height:0;overflow:hidden;">اداره</div>
+                                                                    </th>
+                                                                    <th rowspan="1" colspan="1" style="padding-top: 0px; padding-bottom: 0px; border-top-width: 0px; border-bottom-width: 0px; height: 0px; width: 69.4px;">
+                                                                        <div class="dataTables_sizing" style="height:0;overflow:hidden;">سن</div>
+                                                                    </th>
+                                                                    <th rowspan="1" colspan="1" style="padding-top: 0px; padding-bottom: 0px; border-top-width: 0px; border-bottom-width: 0px; height: 0px; width: 139px;">
+                                                                        <div class="dataTables_sizing" style="height:0;overflow:hidden;">تاریخ شروع</div>
+                                                                    </th>
+                                                                    <th rowspan="1" colspan="1" style="padding-top: 0px; padding-bottom: 0px; border-top-width: 0px; border-bottom-width: 0px; height: 0px; width: 144.8px;">
+                                                                        <div class="dataTables_sizing" style="height:0;overflow:hidden;">حقوق</div>
+                                                                    </th>
+                                                                </tr>
+                                                            </tfoot>
+                                                            <tbody>
+                                                                @foreach (var item in Model.ListNews)
+                                                                {
+                                                                    <tr>
+                                                                        <th>@item.Id</th>
+                                                                        <th>@item.Title</th>
+                                                                        <th>@item.CategoryName</th>
+                                                                        <th>
+
+                                                                            @foreach (var i in item.Tags)
+                                                                            {
+                                                                                <p><b class="icon-tag" style="color:red;"></b><b>  </b>   @i.Name</p>
+                                                                            }
+                                                                        </th>
+                                                                        <th>@item.Views</th>
+                                                                        <th>@item.CommentsNumber</th>
+                                                                        <th>
+                                                                            @{
+                                                                                PersianDateTime p = new PersianDateTime(item.InsertTime);
+                                                                                var insertTime = p.ToLongDateTimeString();
+                                                                            }
+                                                                            @insertTime
+                                                                        </th>
+                                                                        <th>
+                                                                            <a class="btn btn-success" href="~/Admin/News/Detail?NewsId=@item.Id" target="_blank">نمایش خبر</a>
+                                                                            @if (item.IsActive == true)
+                                                                            {
+                                                                                <a class="btn btn-warning" onclick="StatusChangeNews(@item.Id)">غیرفعال</a>
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                <a class="btn btn-info" onclick="StatusChangeNews(@item.Id)">فعال</a>
+                                                                            }
+                                                                            @if (item.IsSlider == true)
+                                                                            {
+                                                                                <a class="btn btn-grey" onclick="SliderChanges(@item.Id)">کنار گذاشتن از اسلایدر</a>
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                <a class="btn btn-success" onclick="SliderChanges(@item.Id)">افزودن به اسلایدر</a>
+                                                                            }
+                                                                            <a class="btn btn-red " onclick="removeNews(@item.Id)">حذف</a>
+                                                                        </th>
+                                                                    </tr>
+                                                                }
+                                                            </tbody>
+                                                        </table>
+                                                    </div><div class="dataTables_scrollFoot" style="overflow: hidden; border: 0px; width: 100%;">
+                                                        <div class="dataTables_scrollFootInner" style="width: 1114.4px; padding-left: 17px;">
+                                                            <table class="table table-striped table-bordered hide-columns-dynamically dataTable" role="grid" style="margin-left: 0px; width: 1114.4px;">
+                                                                <tfoot>
+                                                                    <tr>
+                                                                        <th rowspan="1" colspan="1" style="width: 171.8px;">کد خبر</th>
+                                                                        <th rowspan="1" colspan="1" style="width: 303px;">عنوان خبر</th>
+                                                                        <th rowspan="1" colspan="1" style="width: 124.6px;">دسته بندی</th>
+                                                                        <th rowspan="1" colspan="1" style="width: 69.4px;">برچسب ها</th>
+                                                                        <th rowspan="1" colspan="1" style="width: 139px;">بازدید ها </th>
+                                                                        <th rowspan="1" colspan="1" style="width: 144.8px;">تعداد کامنت ها</th>
+                                                                        <th rowspan="1" colspan="1" style="width: 144.8px;">تاریخ وساعت ثبت</th>
+                                                                        <th rowspan="1" colspan="1" style="width: 144.8px;"></th>
+                                                                    </tr>
+                                                                </tfoot>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+
+                        <p>@ViewBag.MessageNews</p>
+                        <br />
+                        <br />
+                    }
+                    @*---------------------------------------*@
+                    @if (Model.ListComments != null)
+                    {
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title-wrap bar-success">
+                                    <h4 class="card-title">لیست کامنت ها</h4>
+                                </div>
+                            </div>
+                            <div class="card-body collapse show">
+                                <div class="card-block">
+                                    <div id="DataTables_Table_7_wrapper" class="dataTables_wrapper container-fluid dt-bootstrap4">
+                                        <div class="row">
+                                            <div class="col-sm-12 col-md-6">
+                                            </div>
+                                            <div class="col-sm-12 col-md-6">
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <div class="dataTables_scroll">
+                                                    <div class="dataTables_scrollHead" style="overflow: hidden; position: relative; border: 0px; width: 100%;">
+                                                        <div class="dataTables_scrollHeadInner" style="box-sizing: content-box; width: 1114.4px; padding-left: 17px;">
+                                                            <table class="table table-striped table-bordered hide-columns-dynamically dataTable" role="grid" style="margin-left: 0px; width: 1114.4px;">
+                                                                <thead>
+                                                                    <tr role="row">
+                                                                        <th class="sorting_asc" tabindex="0" aria-controls="DataTables_Table_7" rowspan="1" colspan="1" style="width: 153px;" aria-sort="ascending" aria-label="نام: activate to sort column descending">کد خبر</th>
+                                                                        <th class="sorting" tabindex="0" aria-controls="DataTables_Table_7" rowspan="1" colspan="1" style="width: 200px;" aria-label="موقعیت: activate to sort column ascending">متن کامنت</th>
+                                                                        <th class="sorting" tabindex="0" aria-controls="DataTables_Table_7" rowspan="1" colspan="1" style="width: 140px;" aria-label="حقوق: activate to sort column ascending"></th>
+                                                                    </tr>
+                                                                </thead>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                    <div class="dataTables_scrollBody" style="position: relative; overflow: auto; height: 200px; width: 100%;">
+                                                        <table class="table table-striped table-bordered hide-columns-dynamically dataTable" id="DataTables_Table_7" role="grid" aria-describedby="DataTables_Table_7_info" style="width: 100%;">
+                                                            <thead>
+                                                                <tr role="row" style="height: 0px;">
+                                                                    <th class="sorting" aria-controls="DataTables_Table_7" rowspan="1" colspan="1" style="width: 153px; padding-top: 0px; padding-bottom: 0px; border-top-width: 0px; border-bottom-width: 0px; height: 0px;">
+                                                                        <div class="dataTables_sizing" style="height:0;overflow:hidden;">نام</div>
+                                                                    </th>
+                                                                    <th class="sorting" aria-controls="DataTables_Table_7" rowspan="1" colspan="1" style="width: 200px; padding-top: 0px; padding-bottom: 0px; border-top-width: 0px; border-bottom-width: 0px; height: 0px;">
+                                                                        <div class="dataTables_sizing" style="height:0;overflow:hidden;">موقعیت</div>
+                                                                    </th>
+                                                                    <th class="sorting" aria-controls="DataTables_Table_7" rowspan="1" colspan="1" style="width: 140px; padding-top: 0px; padding-bottom: 0px; border-top-width: 0px; border-bottom-width: 0px; height: 0px;">
+                                                                        <div class="dataTables_sizing" style="height:0;overflow:hidden;">اداره</div>
+                                                                    </th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tfoot>
+                                                                <tr style="height: 0px;">
+                                                                    <th rowspan="1" colspan="1" style="padding-top: 0px; padding-bottom: 0px; border-top-width: 0px; border-bottom-width: 0px; height: 0px; width: 153.8px;">
+                                                                        <div class="dataTables_sizing" style="height:0;overflow:hidden;">کد خبر</div>
+                                                                    </th>
+                                                                    <th rowspan="1" colspan="1" style="padding-top: 0px; padding-bottom: 0px; border-top-width: 0px; border-bottom-width: 0px; height: 0px; width: 200px;">
+                                                                        <div class="dataTables_sizing" style="height:0;overflow:hidden;">متن کامنت</div>
+                                                                    </th>
+                                                                    <th rowspan="1" colspan="1" style="padding-top: 0px; padding-bottom: 0px; border-top-width: 0px; border-bottom-width: 0px; height: 0px; width: 124.6px;">
+                                                                        <div class="dataTables_sizing" style="height:0;overflow:hidden;"></div>
+                                                                    </th>
+                                                                </tr>
+                                                            </tfoot>
+                                                            <tbody>
+                                                                @foreach (var item in Model.ListComments)
+                                                                {
+                                                                    <tr class="text-center">
+                                                                        <th>@item.NewsId</th>
+                                                                        <th>@item.Text</th>
+                                                                        <th class="text-center">
+                                                                            <a class="btn btn-success" href="/Admin/News/Detail?NewsId=@item.NewsId">نمایش خبر</a>
+                                                                            @if (item.IsActive == true)
+                                                                            {
+                                                                                <a class="btn btn-warning" onclick="ChangeStatusComment(@item.Id)">غیرفعال</a>
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                <a class="btn btn-info" onclick="ChangeStatusComment(@item.Id)">فعال</a>
+                                                                            }
+                                                                            <a class="btn btn-red " onclick="DeleteComment(@item.Id)">حذف</a>
+                                                                        </th>
+                                                                    </tr>
+                                                                }
+                                                            </tbody>
+                                                        </table>
+                                                    </div><div class="dataTables_scrollFoot" style="overflow: hidden; border: 0px; width: 100%;">
+                                                        <div class="dataTables_scrollFootInner" style="width: 1114.4px; padding-left: 17px;">
+                                                            <table class="table table-striped table-bordered hide-columns-dynamically dataTable" role="grid" style="margin-left: 0px; width: 1114.4px;">
+                                                                <tfoot>
+                                                                    <tr>
+                                                                        <th rowspan="1" colspan="1" style="width: 153px;">کد خبر</th>
+                                                                        <th rowspan="1" colspan="1" style="width: 200px;">متن کامنت</th>
+                                                                        <th rowspan="1" colspan="1" style="width: 140px;"></th>
+                                                                    </tr>
+                                                                </tfoot>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <p>@ViewBag.MessageComment</p>
+                        <br />
+                        <br />
+                    }
+                    @*---------------------------------------*@
+                    @if (Model.ListUsers != null)
+                    {
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title-wrap bar-success">
+                                    <h4 class="card-title">لیست ادمین ها</h4>
+                                </div>
+                            </div>
+                            <div class="card-body collapse show">
+                                <div class="card-block">
+                                    <div id="DataTables_Table_7_wrapper" class="dataTables_wrapper container-fluid dt-bootstrap4">
+                                        <div class="row">
+                                            <div class="col-sm-12 col-md-6">
+                                            </div>
+                                            <div class="col-sm-12 col-md-6">
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <div class="dataTables_scroll">
+                                                    <div class="dataTables_scrollHead" style="overflow: hidden; position: relative; border: 0px; width: 100%;">
+                                                        <div class="dataTables_scrollHeadInner" style="box-sizing: content-box; width: 1114.4px; padding-left: 17px;">
+                                                            <table class="table table-striped table-bordered hide-columns-dynamically dataTable" role="grid" style="margin-left: 0px; width: 1114.4px;">
+                                                                <thead>
+                                                                    <tr role="row">
+                                                                        <th class="sorting_asc" tabindex="0" aria-controls="DataTables_Table_7" rowspan="1" colspan="1" style="width: 150.8px;" aria-sort="ascending" aria-label="نام: activate to sort column descending">عکس</th>
+                                                                        <th class="sorting" tabindex="0" aria-controls="DataTables_Table_7" rowspan="1" colspan="1" style="width: 180px;" aria-label="موقعیت: activate to sort column ascending">نام کاربری</th>
+                                                                        <th class="sorting" tabindex="0" aria-controls="DataTables_Table_7" rowspan="1" colspan="1" style="width: 100px;" aria-label="اداره: activate to sort column ascending">ایمیل</th>
+                                                                        <th class="sorting" tabindex="0" aria-controls="DataTables_Table_7" rowspan="1" colspan="1" style="width: 60px;" aria-label="سن: activate to sort column ascending">سمت</th>
+                                                                        <th class="sorting" tabindex="0" aria-controls="DataTables_Table_7" rowspan="1" colspan="1" style="width: 130px;" aria-label="حقوق: activate to sort column ascending">تاریخ و ساعت ثبت </th>
+                                                                        <th class="sorting" tabindex="0" aria-controls="DataTables_Table_7" rowspan="1" colspan="1"></th>
+                                                                    </tr>
+                                                                </thead>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                    <div class="dataTables_scrollBody" style="position: relative; overflow: auto; height: 200px; width: 100%;">
+                                                        <table class="table table-striped table-bordered hide-columns-dynamically dataTable" id="DataTables_Table_7" role="grid" aria-describedby="DataTables_Table_7_info" style="width: 100%;">
+                                                            <thead>
+                                                                <tr role="row" style="height: 0px;">
+                                                                    <th class="sorting" aria-controls="DataTables_Table_7" rowspan="1" colspan="1" style="width: 150px; padding-top: 0px; padding-bottom: 0px; border-top-width: 0px; border-bottom-width: 0px; height: 0px;">
+                                                                        <div class="dataTables_sizing" style="height:0;overflow:hidden;">نام</div>
+                                                                    </th>
+                                                                    <th class="sorting" aria-controls="DataTables_Table_7" rowspan="1" colspan="1" style="width: 180px; padding-top: 0px; padding-bottom: 0px; border-top-width: 0px; border-bottom-width: 0px; height: 0px;">
+                                                                        <div class="dataTables_sizing" style="height:0;overflow:hidden;">موقعیت</div>
+                                                                    </th>
+                                                                    <th class="sorting" aria-controls="DataTables_Table_7" rowspan="1" colspan="1" style="width: 100px; padding-top: 0px; padding-bottom: 0px; border-top-width: 0px; border-bottom-width: 0px; height: 0px;">
+                                                                        <div class="dataTables_sizing" style="height:0;overflow:hidden;">اداره</div>
+                                                                    </th>
+                                                                    <th class="sorting" aria-controls="DataTables_Table_7" rowspan="1" colspan="1" style="width: 60px; padding-top: 0px; padding-bottom: 0px; border-top-width: 0px; border-bottom-width: 0px; height: 0px;">
+                                                                        <div class="dataTables_sizing" style="height:0;overflow:hidden;">سن</div>
+                                                                    </th>
+                                                                    <th class="sorting" aria-controls="DataTables_Table_7" rowspan="1" colspan="1" style="width: 130px; padding-top: 0px; padding-bottom: 0px; border-top-width: 0px; border-bottom-width: 0px; height: 0px;">
+                                                                        <div class="dataTables_sizing" style="height:0;overflow:hidden;">تاریخ شروع</div>
+                                                                    </th>
+                                                                    <th class="sorting" aria-controls="DataTables_Table_7" rowspan="1" colspan="1" style=" padding-top: 0px; padding-bottom: 0px; border-top-width: 0px; border-bottom-width: 0px; height: 0px;">
+                                                                        <div class="dataTables_sizing" style="height:0;overflow:hidden;">حقوق</div>
+                                                                    </th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tfoot>
+                                                                <tr style="height: 0px;">
+                                                                    <th rowspan="1" colspan="1" style="padding-top: 0px; padding-bottom: 0px; border-top-width: 0px; border-bottom-width: 0px; height: 0px; width: 171.8px;">
+                                                                        <div class="dataTables_sizing" style="height:0;overflow:hidden;">نام</div>
+                                                                    </th>
+                                                                    <th rowspan="1" colspan="1" style="padding-top: 0px; padding-bottom: 0px; border-top-width: 0px; border-bottom-width: 0px; height: 0px; width: 303px;">
+                                                                        <div class="dataTables_sizing" style="height:0;overflow:hidden;">موقعیت</div>
+                                                                    </th>
+                                                                    <th rowspan="1" colspan="1" style="padding-top: 0px; padding-bottom: 0px; border-top-width: 0px; border-bottom-width: 0px; height: 0px; width: 124.6px;">
+                                                                        <div class="dataTables_sizing" style="height:0;overflow:hidden;">اداره</div>
+                                                                    </th>
+                                                                    <th rowspan="1" colspan="1" style="padding-top: 0px; padding-bottom: 0px; border-top-width: 0px; border-bottom-width: 0px; height: 0px; width: 69.4px;">
+                                                                        <div class="dataTables_sizing" style="height:0;overflow:hidden;">سن</div>
+                                                                    </th>
+                                                                    <th rowspan="1" colspan="1" style="padding-top: 0px; padding-bottom: 0px; border-top-width: 0px; border-bottom-width: 0px; height: 0px; width:300px;">
+                                                                        <div class="dataTables_sizing" style="height:0;overflow:hidden;">تاریخ شروع</div>
+                                                                    </th>
+                                                                    <th rowspan="1" colspan="1" style="padding-top: 0px; padding-bottom: 0px; border-top-width: 0px; border-bottom-width: 0px; height: 0px; width: 144.8px;">
+                                                                        <div class="dataTables_sizing" style="height:0;overflow:hidden;">حقوق</div>
+                                                                    </th>
+                                                                </tr>
+                                                            </tfoot>
+
+                                                            <tbody>
+                                                                @foreach (var item in Model.ListUsers)
+                                                                {
+                                                                    <tr class="text-center">
+                                                                        @if (!string.IsNullOrWhiteSpace(item.ImageUrl))
+                                                                        {
+                                                                            <th style="text-align:center;">
+                                                                                <img src="~/@item.ImageUrl" width="80" height="80" style="border-radius:50px;" alt="پروف کاربر" />
+                                                                            </th>
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            <th style="text-align:center;">
+                                                                                <img src="~/Images/AdminImage/Default.jpg" width="80" height="80" style="border-radius:50px;" alt="پروف کاربر" />
+                                                                            </th>
+                                                                        }
+                                                                        <th>@item.FullName</th>
+                                                                        <th>@item.Email</th>
+                                                                        <th>
+                                                                            @if (item.IsOwner == true)
+                                                                            {
+                                                                                <div class="card-block text-center">
+                                                                                    <span class="badge badge-warning">مالک سایت</span>
+                                                                                </div>
+                                                                            }
+                                                                            @foreach (var itemrole in item.RoleDto)
+                                                                            {
+
+                                                                                <div class="card-block text-center">
+                                                                                    <span class="badge badge-warning">{ @itemrole.DisplayName } </span>
+                                                                                </div>
+                                                                            }
+                                                                        </th>
+                                                                        <th>
+                                                                            @{
+                                                                                PersianDateTime pu = new PersianDateTime(item.InsertTime);
+                                                                                var insertTime = pu.ToShortDateTimeString();
+                                                                            }
+                                                                            @insertTime
+                                                                        </th>
+                                                                        <th class="text-center">
+                                                                            <a class="btn btn-primary" href="~/Admin/Users/ProfileUserForAdmin?UserId=@item.Id" target="_blank">پروفایل </a>
+                                                                            <a class="btn btn-success" href="~/Admin/Users/UserActivitiesForAdmin?UserGuid=@item.UserGuid" target="_blank">فعالیت ها  </a>
+                                                                            @if (item.IsActive == true)
+                                                                            {
+                                                                                <a class="btn btn-warning" onclick="userStatusChangeUser(@item.Id)">مسدود کردن</a>
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                <a class="btn btn-info" onclick="userStatusChangeUser(@item.Id)">رفع انسداد</a>
+                                                                            }
+                                                                            <a class="btn btn-red " onclick="removeUser(@item.Id)">حذف</a>
+                                                                        </th>
+                                                                    </tr>
+                                                                }
+                                                            </tbody>
+                                                        </table>
+                                                    </div><div class="dataTables_scrollFoot" style="overflow: hidden; border: 0px; width: 100%;">
+                                                        <div class="dataTables_scrollFootInner" style="width: 1114.4px; padding-left: 17px;">
+                                                            <table class="table table-striped table-bordered hide-columns-dynamically dataTable" role="grid" style="margin-left: 0px; width: 1114.4px;">
+                                                                <tfoot>
+                                                                    <tr>
+                                                                        <th rowspan="1" colspan="1" style="width: 150px;">عکس</th>
+                                                                        <th rowspan="1" colspan="1" style="width: 180px;">نام کاربری</th>
+                                                                        <th rowspan="1" colspan="1" style="width: 100px;">ایمیل</th>
+                                                                        <th rowspan="1" colspan="1" style="width: 60px;">سمت</th>
+                                                                        <th rowspan="1" colspan="1" style="width: 130px;">تاریخ و ساعت ثبت </th>
+                                                                        <th rowspan="1" colspan="1"></th>
+                                                                    </tr>
+                                                                </tfoot>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <p>@ViewBag.MessageUser</p>
+                        <br />
+                        <br />
+                    }
+                    @*---------------------------------------*@
+                    @*---------------------------------------*@
+                    @*---------------------------------------*@
+                    @if (Model.ListCategories != null)
+                    {
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title-wrap bar-success">
+                                    <h4 class="card-title">لیست دسته بندی  ها</h4>
+                                </div>
+                            </div>
+                            <div class="card-body collapse show">
+                                <div class="card-block card-dashboard">
+                                    <div id="DataTables_Table_0_wrapper" class="dataTables_wrapper container-fluid dt-bootstrap4">
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <table class="table table-striped table-bordered zero-configuration dataTable" id="DataTables_Table_0" role="grid" aria-describedby="DataTables_Table_0_info">
+                                                    <thead>
+                                                        <tr role="row">
+                                                            <th class="sorting_asc" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-sort="ascending" aria-label="نام: activate to sort column descending" style="width: 222px;">نام دسته بندی</th>
+                                                            <th class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="ایمیل: activate to sort column ascending" style="width: 170px;">تاریخ و ساعت ثبت</th>
+                                                            <th> </th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @if (Model.ListCategories != null)
+                                                        {
+                                                            @foreach (var item in Model.ListCategories)
+                                                            {
+                                                                <tr>
+                                                                    <td>@item.Name</td>
+                                                                    <td>
+                                                                        @{
+                                                                            PersianDateTime pc = new PersianDateTime(item.InsertTime);
+                                                                            var insertTime = pc.ToLongDateTimeString();
+                                                                        }
+                                                                        @insertTime
+                                                                    </td>
+                                                                    <td>
+                                                                        @if (item.IsActive == true)
+                                                                        {
+                                                                            <a class="btn btn-warning" onclick="StatusChangeCategory(@item.Id)">غیرفعال</a>
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            <a class="btn btn-info" onclick="StatusChangeCategory(@item.Id)">فعال</a>
+                                                                        }
+                                                                        <a class="btn btn-red " onclick="RemoveCategory(@item.Id)">حذف</a>
+                                                                    </td>
+                                                                </tr>
+                                                            }
+                                                        }
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <p>@ViewBag.MessageCategory</p>
+                        <br />
+                        <br />
+                    }
+                    @*---------------------------------------*@
+                    @if (Model.ListTags != null)
+                    {
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title-wrap bar-success">
+                                    <h4 class="card-title">لیست تگ ها</h4>
+                                </div>
+                            </div>
+                            <div class="card-body collapse show">
+                                <div class="card-block card-dashboard">
+                                    <div id="DataTables_Table_0_wrapper" class="dataTables_wrapper container-fluid dt-bootstrap4">
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <table class="table table-striped table-bordered zero-configuration dataTable" id="DataTables_Table_0" role="grid" aria-describedby="DataTables_Table_0_info">
+                                                    <thead>
+                                                        <tr role="row">
+                                                            <th class="sorting_asc" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-sort="ascending" aria-label="نام: activate to sort column descending" style="width: 222px;">نام تگ</th>
+                                                            <th class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="ایمیل: activate to sort column ascending" style="width: 170px;">تاریخ و ساعت ثبت</th>
+                                                            <th> </th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @if (Model.ListTags != null)
+                                                        {
+                                                            @foreach (var item in Model.ListTags)
+                                                            {
+                                                                <tr>
+                                                                    <td>@item.Name</td>
+                                                                    <td>
+                                                                        @{
+                                                                            PersianDateTime pt = new PersianDateTime(item.InsetTime);
+                                                                            var insertTime = pt.ToLongDateTimeString();
+                                                                        }
+                                                                        @insertTime
+                                                                    </td>
+                                                                    <td>
+                                                                        @if (item.IsActive == true)
+                                                                        {
+                                                                            <a class="btn btn-warning" onclick="StatusChangeTag(@item.Id)">غیرفعال</a>
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            <a class="btn btn-info" onclick="StatusChangeTag(@item.Id)">فعال</a>
+                                                                        }
+                                                                        <a class="btn btn-red " onclick="RemoveTag(@item.Id)">حذف</a>
+                                                                    </td>
+                                                                </tr>
+                                                            }
+                                                        }
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <p> @ViewBag.MessageTag</p>
+                        <br />
+                        <br />
+                    }
+                    @*---------------------------------------*@
+
+                    @if (Model.ListMenus != null)
+                    {
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title-wrap bar-success">
+                                    <h4 class="card-title">لیست منو ها</h4>
+                                </div>
+                            </div>
+                            <div class="card-body collapse show">
+                                <div class="card-block card-dashboard">
+                                    <div id="DataTables_Table_0_wrapper" class="dataTables_wrapper container-fluid dt-bootstrap4">
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <table class="table table-striped table-bordered zero-configuration dataTable" id="DataTables_Table_0" role="grid" aria-describedby="DataTables_Table_0_info">
+                                                    <thead>
+                                                        <tr role="row">
+                                                            <th class="sorting_asc" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-sort="ascending" aria-label="نام: activate to sort column descending" style="width: 222px;">نام دسته بندی</th>
+                                                            <th class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="ایمیل: activate to sort column ascending" style="width: 170px;">تاریخ و ساعت ثبت</th>
+                                                            <th> </th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @if (Model.ListMenus != null)
+                                                        {
+                                                            @foreach (var item in Model.ListMenus)
+                                                            {
+                                                                <tr>
+                                                                    <td>@item.Name</td>
+                                                                    <td>
+                                                                        @{
+                                                                            PersianDateTime pm = new PersianDateTime(item.InsertTime);
+                                                                            var insertTime = pm.ToLongDateTimeString();
+                                                                        }
+                                                                        @insertTime
+                                                                    </td>
+                                                                    <td>
+                                                                        @if (item.ChildCount > 0)
+                                                                        {
+                                                                            <a class="btn btn-info" href="~/Admin/Menus/ListChildMenu?MenuId=@item.Id">نمایش زیر منو ها</a>
+                                                                            <a class="btn btn-success" href="~/Admin/Menus/AddChildMenu?MenuId=@item.Id">افزودن زیر منو جدید </a>
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            <a class="btn btn-success" href="~/Admin/Menus/AddChildMenu?MenuId=@item.Id">افزودن زیر منو جدید</a>
+                                                                        }
+                                                                        @if (item.IsActive == true)
+                                                                        {
+                                                                            <a class="btn btn-warning" onclick="StatusChangeMenu(@item.Id)">غیرفعال</a>
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            <a class="btn btn-info" onclick="StatusChangeMenu(@item.Id)">فعال</a>
+                                                                        }
+                                                                        <a class="btn btn-red " onclick="RemoveMenu(@item.Id)">حذف</a>
+                                                                        <a class="btn btn-info " onclick="RemoveMenu(@item.Id)">ویرایش</a>
+                                                                    </td>
+                                                                </tr>
+                                                            }
+                                                        }
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <p> @ViewBag.MessageMenu</p>
+                        <br />
+                        <br />
+                    }
+                    @*---------------------------------------*@
+                    @*---------------------------------------*@
+                    @*---------------------------------------*@
+                    @if (Model.ListChildMenus != null)
+                    {
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title-wrap bar-success">
+                                    <h4 class="card-title">لیست منو منو ها</h4>
+                                </div>
+                            </div>
+                            <div class="card-body collapse show">
+                                <div class="card-block card-dashboard">
+                                    <div id="DataTables_Table_0_wrapper" class="dataTables_wrapper container-fluid dt-bootstrap4">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <table class="table table-striped table-bordered zero-configuration dataTable" id="DataTables_Table_0" role="grid" aria-describedby="DataTables_Table_0_info">
+                                                    <thead>
+                                                        <tr role="row">
+                                                            <th class="sorting_asc" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-sort="ascending" aria-label="نام: activate to sort column descending" style="width: 222px;">نام زیرمنو</th>
+                                                            <th class="sorting_asc" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-sort="ascending" aria-label="نام: activate to sort column descending" style="width: 222px;">نام منو پدر</th>
+                                                            <th class="sorting_asc" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-sort="ascending" aria-label="نام: activate to sort column descending" style="width: 222px;">دسته بندی ها مربوط</th>
+                                                            <th class="sorting_asc" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-sort="ascending" aria-label="نام: activate to sort column descending" style="width: 222px;">تگ های مربوط </th>
+                                                            <th class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="ایمیل: activate to sort column ascending" style="width: 170px;">تاریخ و ساعت ثبت</th>
+                                                            <th> </th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @foreach (var item in Model.ListChildMenus)
+                                                        {
+                                                            <tr>
+                                                                <td>@item.Name</td>
+                                                                <td>@item.ParentName</td>
+                                                                <td>
+                                                                    @foreach (var itemCate in item.ResultCategories)
+                                                                    {
+                                                                        <div class="card-block text-center">
+                                                                            <span class="badge badge-warning">{ @itemCate.Name } </span>
+                                                                        </div>
+                                                                    }
+                                                                </td>
+                                                                <td>
+                                                                    @foreach (var itemTag in item.ResultTags)
+                                                                    {
+
+                                                                        <div class="card-block text-center">
+                                                                            <span class="badge badge-warning">{ @itemTag.Name } </span>
+                                                                        </div>
+                                                                    }
+                                                                </td>
+                                                                <td>
+                                                                    @{
+                                                                        PersianDateTime pcm = new PersianDateTime(item.InsertTime);
+                                                                        var insertTime = pcm.ToLongDateTimeString();
+                                                                    }
+                                                                    @insertTime
+                                                                </td>
+                                                                <td>
+                                                                    @if (item.IsActive == true)
+                                                                    {
+                                                                        <a class="btn btn-warning" onclick="StatusChangeChildMenu(@item.Id)">غیرفعال</a>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <a class="btn btn-info" onclick="StatusChangeChildMenu(@item.Id)">فعال</a>
+                                                                    }
+                                                                    <a class="btn btn-red " onclick="RemoveChildMenu(@item.Id)">حذف</a>
+                                                                    <a class="btn btn-info " onclick="RemoveMenu(@item.Id)">ویرایش</a>
+                                                                </td>
+                                                            </tr>
+                                                        }
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <p>@ViewBag.MessageChildMenu</p>
+                        <br />
+                        <br />
+                    }
+                    @*---------------------------------------*@
+                }
+
+            }
+        </div>
+    </div>
+</section>
+@section Scripts
+{
+    <link href="~/lib/Sweetalert2/Sweetalert2.css" rel="stylesheet" />
+    <script src="~/lib/Sweetalert2/Sweetalert2.js"></script>
+    <script>
+        //----------------------------News-----------------------|
+        function StatusChangeNews(id) {
+            var postData = {
+                'NewsId': id
+            };
+            $.ajax({
+                contentType: 'application/x-www-form-urlencoded',
+                dataType: 'JSON',
+                type: "POST",
+                data: postData,
+                url: "/Admin/News/StatusChange",
+                success: function (data) {
+                    if (data.isSuccess == true) {
+                        swal.fire('موفق', data.message, 'success').then(() => { window.location.reload(); });
+                    }
+                    else {
+                        swal.fire('ناموفق', data.message, 'warning');
+                    }
+                },
+
+            });
+        }
+        function SliderChanges(id) {
+            var postData = {
+                'NewsId': id
+            };
+            $.ajax({
+                contentType: 'application/x-www-form-urlencoded',
+                dataType: 'JSON',
+                type: "POST",
+                data: postData,
+                url: "/Admin/News/SliderChanges",
+                success: function (data) {
+                    if (data.isSuccess == true) {
+                        swal.fire('موفق', data.message, 'success').then(() => { window.location.reload(); });
+                    }
+                    else {
+                        swal.fire('ناموفق', data.message, 'warning');
+                    }
+                },
+
+            });
+        }
+        function removeNews(id) {
+            swal.fire({
+                title: 'حذف خبر',
+                text: 'آیا خبر مورد نظر حذف شود؟',
+                type: 'info',
+                confirmButtonText: 'بله ، حذف شود',
+                cancelButtonText: 'خیر',
+                showCancelButton: true,
+                cancelButtonColor: "#DD6B55",
+                confirmButtonColor: "#DD6B55",
+            }).then((result) => {
+                if (result.value) {
+                    var postData = {
+                        'NewsId': id
+                    };
+                    $.ajax({
+                        contentType: 'application/x-www-form-urlencoded',
+                        dataType: 'JSON',
+                        type: "POST",
+                        data: postData,
+                        url: "/Admin/News/Remove",
+                        success: function (data) {
+                            if (data.isSuccess == true) {
+                                swal.fire('موفق', data.message, 'success').then(() => { window.location.reload(); });
+                            }
+                            else {
+                                swal.fire('ناموفق', data.message, 'warning');
+                            }
+                        },
+
+                    });
+                }
+            });
+        }
+        //----------------------------Commants-----------------------|
+
+        function ChangeStatusComment(CommentId) {
+            swal.fire({
+                title: 'وضعیت نظر',
+                text: 'آیا وضعیت نظر تغییر کند؟',
+                type: 'info',
+                confirmButtonText: 'بله ، تغییر کند',
+                cancelButtonText: 'خیر',
+                showCancelButton: true,
+                cancelButtonColor: "#DD6B55",
+                confirmButtonColor: "#DD6B55",
+            }).then((result) => {
+                if (result.value) {
+                    var postData12 = {
+                        'CommentId': CommentId
+                    };
+                    $.ajax({
+                        contentType: 'application/x-www-form-urlencoded',
+                        url: '/Admin/Comments/ChangeStatus',
+                        type: 'POST',
+                        dataType: 'JSON',
+                        data: postData12,
+                        success: function (data) {
+                            if (data.isSuccess == true) {
+                                swal.fire('موفق', data.message, 'success').then(() => { location.reload() });
+                            } else {
+                                swal.fire('ناموفق ', data.message, 'warning');
+                            }
+                        }
+                    });
+                }
+            });
+        }
+        function DeleteComment(CommentId) {
+            swal.fire({
+                title: 'حذف نظر',
+                text: 'آیا نظر مورد نظر حذف شود؟',
+                type: 'info',
+                confirmButtonText: 'بله ، حذف شود',
+                cancelButtonText: 'خیر',
+                showCancelButton: true,
+                cancelButtonColor: "#DD6B55",
+                confirmButtonColor: "#DD6B55",
+            }).then((result) => {
+                if (result.value) {
+                    var postData = {
+                        'CommentId': CommentId
+                    };
+                    $.ajax({
+                        contentType: 'application/x-www-form-urlencoded',
+                        url: '/Admin/Comments/Delete',
+                        type: 'POST',
+                        dataType: 'JSON',
+                        data: postData,
+                        success: function (data) {
+                            if (data.isSuccess == true) {
+                                swal.fire('موفق', data.message, 'success').then(() => { location.reload() });
+                            } else {
+                                swal.fire('ناموفق ', data.message, 'warning');
+                            }
+                        }
+                    });
+                }
+            });
+        }
+        //----------------------------Users-----------------------|
+        function userStatusChangeUser(userid) {
+            var postData = {
+                'UserId': userid
+            };
+            $.ajax({
+                contentType: 'application/x-www-form-urlencoded',
+                dataType: 'JSON',
+                type: "POST",
+                data: postData,
+                url: "/Admin/Users/UserStatusChange",
+                success: function (data) {
+                    if (data.isSuccess == true) {
+                        swal.fire('موفق', data.message, 'success').then(() => { window.location.reload(); });
+                    }
+                    else {
+                        swal.fire('ناموفق', data.message, 'warning');
+                    }
+                },
+
+            });
+        }
+        function removeUser(userid) {
+            swal.fire({
+                title: 'حذف کاربر',
+                text: 'آیا ادمین مورد نظر حذف شود؟',
+                type: 'info',
+                confirmButtonText: 'بله ، حذف شود',
+                cancelButtonText: 'خیر',
+                showCancelButton: true,
+                cancelButtonColor: "#DD6B55",
+                confirmButtonColor: "#DD6B55",
+            }).then((result) => {
+                if (result.value) {
+                    var postData = {
+                        'UserId': userid
+                    };
+                    $.ajax({
+                        contentType: 'application/x-www-form-urlencoded',
+                        dataType: 'Json',
+                        type: "Post",
+                        data: postData,
+                        url: "/Admin/Users/RemoveUser",
+                        success: function (data) {
+                            if (data.isSuccess == true) {
+                                swal.fire('موفق', data.message, 'success').then(() => { window.location.reload(); });
+                            }
+                            else {
+                                swal.fire('ناموفق', data.message, 'warning');
+                            }
+                        },
+
+                    });
+                }
+            });
+        }
+        //----------------------------Categories-----------------------|
+        function StatusChangeCategory(id) {
+            var postData = {
+                'CategoryId': id
+            };
+            $.ajax({
+                contentType: 'application/x-www-form-urlencoded',
+                dataType: 'JSON',
+                type: "POST",
+                data: postData,
+                url: "/Admin/Categories/StatusChange",
+                success: function (data) {
+                    if (data.isSuccess == true) {
+                        swal.fire('موفق', data.message, 'success').then(() => { window.location.reload(); });
+                    }
+                    else {
+                        swal.fire('ناموفق', data.message, 'warning');
+                    }
+                },
+
+            });
+        }
+        function RemoveCategory(id) {
+            swal.fire({
+                title: 'حذف دسته',
+                text: 'آیا دسته مورد نظر حذف شود؟',
+                type: 'info',
+                confirmButtonText: 'بله ، حذف شود',
+                cancelButtonText: 'خیر',
+                showCancelButton: true,
+                cancelButtonColor: "#DD6B55",
+                confirmButtonColor: "#DD6B55",
+            }).then((result) => {
+                if (result.value) {
+                    var postData = {
+                        'CategoryId': id
+                    };
+                    $.ajax({
+                        contentType: 'application/x-www-form-urlencoded',
+                        dataType: 'Json',
+                        type: "Post",
+                        data: postData,
+                        url: "/Admin/Categories/Remove",
+                        success: function (data) {
+                            if (data.isSuccess == true) {
+                                swal.fire('موفق', data.message, 'success').then(() => { window.location.reload(); });
+                            }
+                            else {
+                                swal.fire('ناموفق', data.message, 'warning');
+                            }
+                        },
+
+                    });
+                }
+            });
+        }
+        //----------------------------Tags-----------------------|
+        function StatusChangeTag(id) {
+            var postData = {
+                'TagId': id
+            };
+            $.ajax({
+                contentType: 'application/x-www-form-urlencoded',
+                dataType: 'JSON',
+                type: "POST",
+                data: postData,
+                url: "/Admin/Tags/StatusChange",
+                success: function (data) {
+                    if (data.isSuccess == true) {
+                        swal.fire('موفق', data.message, 'success').then(() => { window.location.reload(); });
+                    }
+                    else {
+                        swal.fire('ناموفق', data.message, 'warning');
+                    }
+                },
+
+            });
+        }
+        function RemoveTag(id) {
+            swal.fire({
+                title: 'حذف تگ',
+                text: 'آیا تگ مورد نظر حذف شود؟',
+                type: 'info',
+                confirmButtonText: 'بله ، حذف شود',
+                cancelButtonText: 'خیر',
+                showCancelButton: true,
+                cancelButtonColor: "#DD6B55",
+                confirmButtonColor: "#DD6B55",
+            }).then((result) => {
+                if (result.value) {
+                    var postData = {
+                        'TagId': id
+                    };
+                    $.ajax({
+                        contentType: 'application/x-www-form-urlencoded',
+                        dataType: 'Json',
+                        type: "Post",
+                        data: postData,
+                        url: "/Admin/Tags/Remove",
+                        success: function (data) {
+                            if (data.isSuccess == true) {
+                                swal.fire('موفق', data.message, 'success').then(() => { window.location.reload(); });
+                            }
+                            else {
+                                swal.fire('ناموفق', data.message, 'warning');
+                            }
+                        },
+
+                    });
+                }
+            });
+        }
+        //----------------------------Menus-----------------------|
+        function StatusChangeMenu(id) {
+            var postData = {
+                'MenuId': id
+            };
+            $.ajax({
+                contentType: 'application/x-www-form-urlencoded',
+                dataType: 'JSON',
+                type: "POST",
+                data: postData,
+                url: "/Admin/Menus/StatusChangeMenu",
+                success: function (data) {
+                    if (data.isSuccess == true) {
+                        swal.fire('موفق', data.message, 'success').then(() => { window.location.reload(); });
+                    }
+                    else {
+                        swal.fire('ناموفق', data.message, 'warning');
+                    }
+                },
+
+            });
+        }
+        function RemoveMenu(id) {
+            swal.fire({
+                title: 'حذف منو',
+                text: 'آیا منو مورد نظر حذف شود؟',
+                type: 'info',
+                confirmButtonText: 'بله ، حذف شود',
+                cancelButtonText: 'خیر',
+
+                showCancelButton: true,
+                cancelButtonColor: "#DD6B55",
+                confirmButtonColor: "#DD6B55",
+            }).then((result) => {
+                if (result.value) {
+                    var postData = {
+                        'MenuId': id
+                    };
+                    $.ajax({
+                        contentType: 'application/x-www-form-urlencoded',
+                        dataType: 'Json',
+                        type: "Post",
+                        data: postData,
+                        url: "/Admin/Menus/RemoveMenu",
+                        success: function (data) {
+                            if (data.isSuccess == true) {
+                                swal.fire('موفق', data.message, 'success').then(() => { window.location.reload(); });
+                            }
+                            else {
+                                swal.fire('ناموفق', data.message, 'warning');
+                            }
+                        },
+
+                    });
+                }
+            });
+        }
+        //----------------------------ChildMenus-----------------------|
+        function StatusChangeChildMenu(id) {
+            var postData = {
+                'ChildMenuId': id
+            };
+            $.ajax({
+                contentType: 'application/x-www-form-urlencoded',
+                dataType: 'JSON',
+                type: "POST",
+                data: postData,
+                url: "/Admin/Menus/StatusChangeChildMenu",
+                success: function (data) {
+                    if (data.isSuccess == true) {
+                        swal.fire('موفق', data.message, 'success').then(() => { window.location.reload(); });
+                    }
+                    else {
+                        swal.fire('ناموفق', data.message, 'warning');
+                    }
+                },
+
+            });
+        }
+        function RemoveChildMenu(id) {
+            swal.fire({
+                title: 'حذف زیر منو',
+                text: 'آیا زیر منو مورد نظر حذف شود؟',
+                type: 'info',
+                confirmButtonText: 'بله ، حذف شود',
+                cancelButtonText: 'خیر',
+                showCancelButton: true,
+                cancelButtonColor: "#DD6B55",
+                confirmButtonColor: "#DD6B55",
+            }).then((result) => {
+                if (result.value) {
+                    var postData = {
+                        'ChildMenuId': id
+                    };
+                    $.ajax({
+                        contentType: 'application/x-www-form-urlencoded',
+                        dataType: 'Json',
+                        type: "Post",
+                        data: postData,
+                        url: "/Admin/Menus/RemoveChildMenu",
+                        success: function (data) {
+                            if (data.isSuccess == true) {
+                                swal.fire('موفق', data.message, 'success').then(() => { window.location.reload(); });
+                            }
+                            else {
+                                swal.fire('ناموفق', data.message, 'warning');
+                            }
+                        },
+
+                    });
+                }
+            });
+        }
+    </script>
+}

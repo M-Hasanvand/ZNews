@@ -1,0 +1,198 @@
+﻿@addTagHelper *, LazZiya.TagHelpers
+@using ZNews.Application.Services.Users.Queries.GetUsers
+@model ResultPagingUserDto
+@{
+    ViewData["Title"] = "لیست کاربران";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+<div class="content-wrapper">
+    <div class="container-fluid">
+        <!-- Zero configuration table -->
+        <section id="configuration">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title-wrap bar-success">
+                                <h4 class="card-title">لیست ادمین ها</h4>
+                            </div>
+                        </div>
+                        <div class="card-body collapse show">
+                            <div class="card-block card-dashboard">
+                                <a class="btn btn-success" href="~/Admin/Users/AddUser">ثبت نام ادمین جدید</a>
+                                <div id="DataTables_Table_0_wrapper" class="dataTables_wrapper container-fluid dt-bootstrap4">
+                                    <div class="row">
+                                        <div class="col-xl-8 col-sm-12 col-md-6">
+                                            <div class="dataTables_length" id="DataTables_Table_0_length">
+                                                <div id="DataTables_Table_0_filter" class="dataTables_filter">
+                                                    <form method="get">
+                                                        <div class="col-xl-4 col-lg-6 col-md-12 mb-1">
+                                                            <fieldset class="form-group">
+                                                                <label for="basicInput"><b>نام ادمین :</b></label>
+                                                                <input type="text" class="form-control" name="searchkey">
+                                                                <br />
+                                                                <button class="btn btn-success">جستوجو</button>
+                                                            </fieldset>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <table class="table table-striped table-bordered dataTables_scrollHeadInner zero-configuration dataTable" id="DataTables_Table_0" role="grid" aria-describedby="DataTables_Table_0_info">
+                                                <thead>
+                                                    <tr role="row">
+                                                        <th class="sorting_asc" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-sort="ascending" aria-label="نام: activate to sort column descending" style="width: 110px;">عکس</th>
+                                                        <th class="sorting_asc" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-sort="ascending" aria-label="نام: activate to sort column descending" style="width: 222px;">نام کاربری</th>
+                                                        <th class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="ایمیل: activate to sort column ascending" style="width: 301px;">ایمیل</th>
+                                                        <th class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="ایمیل: activate to sort column ascending" style="width: 100px;">سمت</th>
+                                                        <th> </th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach (var item in Model.Users)
+                                                    {
+                                                        <tr class="text-center">
+                                                            @if (!string.IsNullOrWhiteSpace(item.ImageUrl))
+                                                            {
+                                                                <th style="text-align:center;">
+                                                                    <img src="~/@item.ImageUrl" width="80" height="80" style="border-radius:50px;" alt="پروف کاربر" />
+                                                                </th>
+                                                            }
+                                                            else
+                                                            {
+                                                                <th style="text-align:center;">
+                                                                    <img src="~/Images/AdminImage/Default.jpg" width="80" height="80" style="border-radius:50px;" alt="پروف کاربر" />
+                                                                </th>
+                                                            }
+                                                            <th>@item.FullName</th>
+                                                            <th>@item.Email</th>
+                                                            <th>
+                                                                @if (item.IsOwner == true)
+                                                                {
+                                                                <div class="card-block text-center">
+                                                                    <span class="badge badge-warning">مالک سایت</span>
+                                                                </div>
+                                                                }
+                                                                @foreach (var role in item.RoleDto)
+                                                                {
+
+                                                                    <div class="card-block text-center">
+                                                                        <span class="badge badge-warning">{ @role.DisplayName } </span>
+                                                                    </div>
+                                                                }
+                                                            </th>
+                                                            <th class="text-center">
+                                                                <a class="btn btn-primary" href="~/Admin/Users/ProfileUserForAdmin?UserGuid=@item.UserGuid" target="_blank">پروفایل </a>
+                                                                @foreach (var role in ZNews.EndPoint.Utilities.ClaimUtility.GetRoles(User))
+                                                                {
+                                                                    if (role == ZNews.Common.Roles.UserRole.Admin)
+                                                                    {
+                                                                        <a class="btn btn-success" href="~/Admin/Users/UserActivities?UserId=@item.Id" target="_blank">فعالیت ها  </a>
+                                                                        @if (item.IsActive == true)
+                                                                        {
+                                                                            <a class="btn btn-warning" onclick="userStatusChange(@item.Id)">مسدود کردن</a>
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            <a class="btn btn-info" onclick="userStatusChange(@item.Id)">رفع انسداد</a>
+                                                                        }
+                                                                        <a class="btn btn-red " onclick="removeUser(@item.Id)">حذف</a>
+                                                                    }
+                                                                }
+                                                            </th>
+                                                        </tr>
+                                                    }
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-12 col-md-5">
+                                            <div class="dataTables_info" id="DataTables_Table_0_info" role="status" aria-live="polite">(@Model.UserCount) سطرها</div>
+                                        </div>
+                                        <paging page-no="@Model.CurrentPage"
+                                                page-size="@Model.PageSize"
+                                                total-records="@Model.UserCount"
+                                                show-first-last="true"
+                                                show-prev-next="true"
+                                                show-first-numbered-page="true"
+                                                show-last-numbered-page="true"
+                                                query-string-key-page-no="CurrentPage"
+                                                query-string-key-page-size="PageSize"
+                                                query-string-value="@(Context.Request.QueryString.Value)"></paging>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+@section Scripts
+{
+    <link href="~/lib/Sweetalert2/Sweetalert2.css" rel="stylesheet" />
+    <script src="~/lib/Sweetalert2/Sweetalert2.js"></script>
+    <script>
+        function userStatusChange(userid)
+        {
+            var postData = {
+                'UserId': userid
+            };
+            $.ajax({
+                contentType: 'application/x-www-form-urlencoded',
+                dataType: 'JSON',
+                type: "POST",
+                data: postData,
+                url: "/Admin/Users/UserStatusChange",
+                success: function (data) {
+                    if (data.isSuccess == true) {
+                        swal.fire('موفق', data.message, 'success').then(() => { window.location.reload(); });
+                    }
+                    else {
+                        swal.fire('ناموفق', data.message, 'warning');
+                    }
+                },
+
+            });
+        }
+        function removeUser(userid) {
+            swal.fire({
+                title: 'حذف کاربر',
+                text: 'آیا ادمین مورد نظر حذف شود؟',
+                type:'info',
+                confirmButtonText: 'بله ، حذف شود',
+                cancelButtonText: 'خیر',
+                showCancelButton: true,
+                cancelButtonColor: "#DD6B55",
+                confirmButtonColor: "#DD6B55",
+            }).then((result) => {
+                if (result.value) {
+                    var postData = {
+                        'UserId': userid
+                    };
+                    $.ajax({
+                        contentType: 'application/x-www-form-urlencoded',
+                        dataType: 'Json',
+                        type: "Post",
+                        data: postData,
+                        url: "/Admin/Users/RemoveUser",
+                        success: function (data) {
+                            if (data.isSuccess == true) {
+                                swal.fire('موفق', data.message, 'success').then(() => { window.location.reload(); });
+                            }
+                            else {
+                                swal.fire('ناموفق', data.message, 'warning');
+                            }
+                        },
+
+                    });
+                }
+            });
+        }
+    </script>
+}

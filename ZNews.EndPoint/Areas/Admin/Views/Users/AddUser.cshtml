@@ -1,0 +1,159 @@
+﻿@addTagHelper*, Microsoft.AspNetCore.Mvc.TagHelpers
+@using ZNews.Application.Services.Users.Queries.GetRoles;
+@{
+    ViewData["Title"] = "ثبت نام ادمین جدید";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+<section class="basic-elements container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card container-fluid">
+                <div class="card-header">
+                    <div class="card-title-wrap bar-success">
+                        <h4 class="card-title mb-0">اطلاعات ادمین جدید را وارد نمایید</h4>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="px-3">
+                        <div class="form">
+                            <div class="form-body">
+                                <div class="row">
+                                    <div class="col-xl-4 col-lg-6 col-md-12 mb-1">
+                                        <fieldset class="form-group">
+                                            <label for="basicInput">نام و نام خانوادگی</label>
+                                            <input type="text" class="form-control" id="fullname">
+                                        </fieldset>
+                                    </div>
+                                    <div class="col-xl-4 col-lg-6 col-md-12 mb-1">
+                                        <fieldset class="form-group">
+                                            <label for="helpInputTop">پست الکترونیک</label>
+                                            <small class="text-muted"><i>info@Znews.net</i></small>
+                                            <input type="text" class="form-control" id="email">
+                                        </fieldset>
+                                    </div>
+                                    <div class="col-xl-4 col-lg-6 col-md-12 mb-1">
+                                        <fieldset class="form-group">
+                                            <label for="disabledInput">آدرس </label>
+                                            <input type="text" class="form-control" id="address">
+                                        </fieldset>
+                                    </div>
+                                    <div class="col-xl-4 col-lg-6 col-md-12 mb-1">
+                                        <fieldset class="form-group">
+                                            <label for="helpInputTop">شماره تلفن</label>
+                                            <input type="text" class="form-control" id="number">
+                                        </fieldset>
+                                    </div>
+                                    <div class="col-xl-4 col-lg-6 col-md-12 mb-1">
+                                        <fieldset class="form-group">
+                                            <label for="helpInputTop">شماره ملی</label>
+                                            <input type="text" class="form-control" id="national">
+                                        </fieldset>
+                                    </div>
+                                    <div class="col-xl-4 col-lg-6 col-md-12 mb-1">
+                                        <fieldset class="form-group">
+                                            <label for="disabledInput">رمز عبور</label>
+                                            <input type="password" class="form-control" id="password">
+                                        </fieldset>
+                                    </div>
+                                    <div class="col-xl-4 col-lg-6 col-md-12 mb-1">
+                                        <fieldset class="form-group">
+                                            <label for="disabledInput">تکرار رمز عبور</label>
+                                            <input type="password" class="form-control" id="rePassword">
+                                        </fieldset>
+                                    </div>
+                                    <div class="col-xl-4 col-lg-6 col-md-12 mb-1">
+                                        <fieldset class="form-group">
+                                            <label for="disabledInput">جنسیت </label>
+                                            <select class="form-control" id="gender">
+                                                <option value="1">مرد</option>
+                                                <option value="0">زن</option>
+                                            </select>
+                                        </fieldset>
+                                    </div>
+                                    <div class="col-xl-4 col-lg-6 col-md-12 mb-1">
+                                        <fieldset class="form-group">
+                                            <label for="basicSelect"> نقش  <b> ( سطح دسترسی کاربر ) </b>تعیین کنید </label>
+                                            @foreach (var item in ViewBag.Roles as List<ResultRoles>)
+                                            {
+                                                <div class="checkbox">
+                                                    <div class="custom-control custom-checkbox m-0">
+                                                        <input type="checkbox" class="custom-control-input" id="@item.Name" onclick="addRole('@item.Name',@item.Id)">
+                                                        <label class="custom-control-label" for="@item.Name">@item.DisplayName</label>
+                                                    </div>
+                                                </div>
+                                            }
+                                        </fieldset>
+                                    </div>
+                                    <div class="col-xl-12 col-lg-12 col-md-12 mb-1">
+                                        <fieldset class="form-group">
+                                            <br />
+                                            <a onclick="AddUser()" class="btn btn-success col-md-12">تکمیل ثبت نام </a>
+                                        </fieldset>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+@section Scripts
+{
+    <link href="~/lib/Sweetalert2/Sweetalert2.css" rel="stylesheet" />
+    <script src="~/lib/Sweetalert2/Sweetalert2.js"></script>
+    <script>
+        let SetRoles = new Set();
+        //------------------AddTag-For-SetTags-------------------|
+        function addRole(RoleName, userId) {
+            $("#" + RoleName).on('change', function () {
+                if ((this.checked == true)) {
+                    SetRoles.add(userId);
+                }
+                else {
+                    SetRoles.delete(userId);
+                }
+            });
+        }
+        function AddUser() {
+            var postData = new FormData();
+            postData.append('FullName', $("#fullname").val());
+            postData.append('Email', $("#email").val());
+            postData.append('MobileNumber', $("#number").val());
+            postData.append('NationalNumber', $("#national").val());
+            postData.append('Password', $("#password").val());
+            postData.append('RePassword', $("#rePassword").val());
+            postData.append('Address', $("#address").val());
+            var selectValue = $("#gender").val();
+            if (selectValue == 0) {
+                postData.append('Gender', false);
+            }
+            if (selectValue == 1){
+                postData.append('Gender', true);
+            }
+            let arr = Array.from(SetRoles);
+            for (let index = 0; index < arr.length; index++) {
+                console.log(index + "-" + arr[index]);
+                postData.append("RolesDto[" + index + "].Id", arr[index]);
+            }
+            $.ajax({
+                contentType: false,
+                processData: false,
+                dataType:"JSON",
+                type: "POST",
+                url: "/Admin/Users/AddUser",
+                data: postData,
+                success: function (data) {
+                    if (data.isSuccess == true) {
+                        swal.fire('موفق!', data.message, 'success')
+                            .then(function (isConfirm) { window.location.replace("/Admin/Users/ListUsers") });
+                    }
+                    else {
+                        swal.fire('هشدار !!', data.message, 'warning');
+                    }
+                }
+            });
+        }
+    </script>
+}

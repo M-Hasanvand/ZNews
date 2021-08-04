@@ -1,0 +1,32 @@
+/*===============================================
+* header css
+================================================*/
+.zm-secondary-menu ul li a:hover, .topbar-sblock a:not(.social-btn):hover, .topbar-sblock a:not(.social-btn):hover i, .login-btn:hover, .zm-posts-tab-menu > .nav-tabs > li.active > a, .zm-posts-tab-menu > .nav-tabs > li.active > a:focus, .zm-posts-tab-menu > .nav-tabs > li.active > a:hover, .single-address i, .mega-menu-area .zm-megamenu-sub-tab li.active a, .expand-archive{
+    color: #f0442c !important;
+}
+
+
+
+.zm-submit-box input[type="submit"]:hover {
+    background: #f0442c none repeat scroll 0 0;
+    border-color: #f0442c;
+}
+.zm-submit-box a:hover {
+    background: #f0442c none repeat scroll 0 0;
+    border-color: #f0442c;
+}
+
+.subscribe-form input[type=submit], .slider-post-area-content .slide-posts > .owl-controls > .owl-nav > div, .posts-thumbnails-wrapper.list-unstyled > li::before, .submit-button, .search-form button  {
+    background: #f0442c !important;
+}
+.subscribe-form input[type=submit]:hover {
+    background: #d63b25;
+}
+
+/*====================================
+* Post css
+======================================*/
+
+.zm-post-title.text-white:hover, .zm-post-title.text-white:hover a, .text-white h1:hover, .text-white p:hover, .text-white h2:hover, .text-white a:not(.cat-btn):hover {
+    color: #f0442c;
+}

@@ -1,0 +1,135 @@
+﻿@using ZNews.Application.Services.Tags.Queries.GetTagsForAddMenu;
+@using ZNews.Application.Services.Categories.Queries.GetCategoriesForAddMenu;
+@{
+    ViewData["Title"] = "افرودن زیر منو";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+<section class="basic-elements container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card container-fluid">
+                <div class="card-header">
+                    <div class="card-title-wrap bar-success">
+                        <h4 class="card-title mb-0">افزودن منو جدید</h4>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="px-3">
+                        <div class="form">
+                            <div class="form-body">
+                                <div class="row">
+                                    <div class="col-xl-12 col-lg-12 col-md-12 mb-1">
+                                        <fieldset class="form-group">
+                                            <label for="basicInput">نام : </label>
+                                            <input type="hidden" class="form-control" id="ParentId"
+                                                value="@ViewBag.MenuId">
+                                            <input type="text" class="form-control" id="name">
+                                            <input type="hidden" class="form-control" id="userid"
+                                                value="@ZNews.EndPoint.Utilities.ClaimUtility.UserId(User)">
+                                        </fieldset>
+                                    </div>
+                                    <div class="col-xl-6 col-lg-6 col-md-12 mb-1">
+                                        <fieldset class="form-group">
+                                            <label for="basicSelect">دسته بندی های مرتبط را انتخاب کنید</label>
+                                            @foreach (var item in ViewBag.Categories as List<ResultCategoriesForAddMenuDto>)
+                                            {
+                                                <div class="checkbox">
+                                                    <div class="custom-control custom-checkbox m-0">
+                                                        <input type="checkbox" class="custom-control-input" id="@item.Id" onclick="addCategory(@item.Id,@item.Id)">
+                                                        <label class="custom-control-label" for="@item.Id">@item.Name</label>
+                                                    </div>
+                                                </div>
+                                            }
+                                        </fieldset>
+                                    </div>
+                                    <div class="col-xl-6 col-lg-6 col-md-12 mb-1">
+                                        <fieldset class="form-group">
+                                            <label for="basicSelect">تگ های مرتبط را انتخاب کنید</label>
+                                            @foreach (var item in ViewBag.Tags as List<ResultGetTagsAddMenuDto>)
+                                            {
+                                                <div class="checkbox">
+                                                    <div class="custom-control custom-checkbox m-0">
+                                                        <input type="checkbox" class="custom-control-input" id="@item.Id" onclick="addTag(@item.Id,@item.Id)">
+                                                        <label class="custom-control-label" for="@item.Id">@item.Name</label>
+                                                    </div>
+                                                </div>
+                                            }
+                                        </fieldset>
+                                    </div>
+                                    <div class="col-xl-12 col-lg-12 col-md-12 mb-1">
+                                        <fieldset class="form-group">
+                                            <br />
+                                            <a onclick="AddMenu()" class="btn btn-success col-md-12"> ثبت زیر منو</a>
+                                        </fieldset>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+@section Scripts
+{
+<link rel="stylesheet" href="~/lib/Sweetalert2/Sweetalert2.css">
+<script src="~/lib/Sweetalert2/Sweetalert2.js"></script>
+<script>
+    let setTags = new Set();
+    let setCategories = new Set();
+    function addCategory(name, id) {
+        $("#" + name).on('change', function () {
+            if ((this.checked == true)) {
+                setCategories.add(id);
+            }
+            else {
+                setCategories.delete(id);
+            }
+        });
+    }
+    function addTag(name, id) {
+        $("#" + name).on('change', function () {
+            if ((this.checked == true)) {
+                setTags.add(id);
+            }
+            else {
+                setTags.delete(id);
+            }
+        });
+    }
+    function AddMenu() {
+        var postData = new FormData();
+        postData.append('Name', $("#name").val());
+        postData.append('ParentId', $("#ParentId").val());
+        postData.append('UserId', $("#userid").val());
+
+        let arrCategories = Array.from(setCategories);
+        for (var ic = 0; ic < arrCategories.length; ic++) {
+            postData.append('CategoriesMenuDto[' + ic + '].CateId', arrCategories[ic]);
+        }
+
+        let arrTags = Array.from(setTags);
+        for (var it = 0; it < arrTags.length; it++) {
+            postData.append('TagsMenuDto[' + it + '].TagId', arrTags[it]);
+        }
+        $.ajax({
+            contentType: false,
+            processData: false,
+            dataType: "JSON",
+            type: "POST",
+            url: "/Admin/Menus/AddChildMenu",
+            data: postData,
+            success: function (data) {
+                if (data.isSuccess == true) {
+                    swal.fire('موفق!', data.message, 'success')
+                        .then(function (isConfirm) { window.location.reload());
+                }
+                else {
+                    swal.fire('هشدار !!', data.message, 'warning');
+                }
+            }
+        });
+    }
+</script>
+}

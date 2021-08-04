@@ -1,0 +1,143 @@
+﻿@using ZNews.Application.Services.Menus.Queries.GetChildMenusForAdmin;
+@model List<ResultGetChildMenusForAdminDto>
+@{
+    ViewData["Title"] = "لیست زیر منوها  ";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+<section class="basic-elements container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title-wrap bar-success">
+                        <h4 class="card-title">لیست زیر منو ها</h4>
+                    </div>
+                </div>
+                <div class="card-body collapse show">
+                    <div class="card-block card-dashboard">
+                        <a class="btn btn-success" href="~/Admin/Menus/AddChildMenu?MenuId=@ViewBag.MenuId">افزودن زیر منو جدید </a>
+                        <div id="DataTables_Table_0_wrapper" class="dataTables_wrapper container-fluid dt-bootstrap4">
+                            <div class="row">
+                                <div class="col-12">
+                                    <table class="table table-striped table-bordered zero-configuration dataTable" id="DataTables_Table_0" role="grid" aria-describedby="DataTables_Table_0_info">
+                                        <thead>
+                                            <tr role="row">
+                                                <th class="sorting_asc" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-sort="ascending" aria-label="نام: activate to sort column descending" style="width: 222px;">نام زیرمنو</th>
+                                                <th class="sorting_asc" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-sort="ascending" aria-label="نام: activate to sort column descending" style="width: 222px;">نام منو پدر</th>
+                                                <th class="sorting_asc" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-sort="ascending" aria-label="نام: activate to sort column descending" style="width: 222px;">دسته بندی ها مربوط</th>
+                                                <th class="sorting_asc" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-sort="ascending" aria-label="نام: activate to sort column descending" style="width: 222px;">تگ های مربوط </th>
+                                                <th> </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            
+                                            @foreach (var item in Model)
+                                            {
+                                                <tr>
+                                                    <td>@item.Name</td>
+                                                    <td>@item.ParentName</td>
+                                                    <td>
+                                                        @foreach (var itemCate in item.ResultCategories)
+                                                        {
+                                                            <div class="card-block text-center">
+                                                                <span class="badge badge-warning">{ @itemCate.Name } </span>
+                                                            </div>
+                                                        }
+                                                    </td>
+                                                    <td>
+                                                        @foreach (var itemTag in item.ResultTags)
+                                                        {
+                                                            
+                                                            <div class="card-block text-center">
+                                                                <span class="badge badge-warning">{ @itemTag.Name } </span>
+                                                            </div>
+                                                        }
+                                                    </td>
+                                                    <td>
+                                                        @if (item.IsActive == true)
+                                                        {
+                                                            <a class="btn btn-warning" onclick="StatusChange(@item.Id)">غیرفعال</a>
+                                                        }
+                                                        else
+                                                        {
+                                                            <a class="btn btn-info" onclick="StatusChange(@item.Id)">فعال</a>
+                                                        }
+                                                        <a class="btn btn-red " onclick="Remove(@item.Id)">حذف</a>
+                                                        <a class="btn btn-info " onclick="RemoveMenu(@item.Id)">ویرایش</a>
+                                                    </td>
+                                                </tr>
+                                            }
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+@section Scripts
+{
+    <link href="~/lib/Sweetalert2/Sweetalert2.css" rel="stylesheet" />
+    <script src="~/lib/Sweetalert2/Sweetalert2.js"></script>
+    <script>
+        function StatusChange(id) {
+            var postData = {
+                'ChildMenuId': id
+            };
+            $.ajax({
+                contentType: 'application/x-www-form-urlencoded',
+                dataType: 'JSON',
+                type: "POST",
+                data: postData,
+                url: "/Admin/Menus/StatusChangeChildMenu",
+                success: function (data) {
+                    if (data.isSuccess == true) {
+                        swal.fire('موفق', data.message, 'success').then(() => { window.location.reload(); });
+                    }
+                    else {
+                        swal.fire('ناموفق', data.message, 'warning');
+                    }
+                },
+
+            });
+        }
+        function Remove(id) {
+            swal.fire({
+                title: 'حذف زیر منو',
+                text: 'آیا زیر منو مورد نظر حذف شود؟',
+                type: 'info',
+                confirmButtonText: 'بله ، حذف شود',
+                cancelButtonText: 'خیر',
+                showCancelButton: true,
+                cancelButtonColor: "#DD6B55",
+                confirmButtonColor: "#DD6B55",
+            }).then((result) => {
+                if (result.value) {
+                    var postData = {
+                        'ChildMenuId': id
+                    };
+                    $.ajax({
+                        contentType: 'application/x-www-form-urlencoded',
+                        dataType: 'Json',
+                        type: "Post",
+                        data: postData,
+                        url: "/Admin/Menus/RemoveChildMenu",
+                        success: function (data) {
+                            if (data.isSuccess == true) {
+                                swal.fire('موفق', data.message, 'success').then(() => { window.location.reload(); });
+                            }
+                            else {
+                                swal.fire('ناموفق', data.message, 'warning');
+                            }
+                        },
+
+                    });
+                }
+            });
+        }
+    </script>
+}
+
+

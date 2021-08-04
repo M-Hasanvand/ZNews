@@ -1,0 +1,83 @@
+﻿@using ZNews.Application.Services.Menus.Queries.GetMenusForSite;
+@model List<ResultGetMenusForSiteDto>
+@{
+    ViewData["Title"] = " ";
+    Layout = null;
+}
+<div class="header-bottom-area hidden-sm hidden-xs">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 f-right">
+                <div class="menu-wrapper  bg-theme clearfix">
+                    <div class="row">
+                        <div class="col-md-11  f-right">
+                            <div class="mainmenu-area">
+                                <nav class="primary-menu f-right">
+                                    <ul class="clearfix">
+                                        @foreach (var itemMenu in Model)
+                                        {
+                                        <li class="current drop">
+                                            <a>@itemMenu.Name</a>
+                                            <ul class="dropdown">
+                                                @foreach (var itemChildMenu in itemMenu.ChildMenus)
+                                                {
+                                                    <li><a href="/News/Index?ChildMenuId=@itemChildMenu.Id"> @itemChildMenu.Name </a></li>
+                                                }
+                                            </ul>
+                                        </li>
+                                        }
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div>
+                        <div class="col-md-1">
+                            <div class="search-wrap">
+                                <div class="search-btn"><i class="fa fa-search"></i></div>
+                                <div class="search-form">
+                                    <form action="~/News/Index">
+                                        <input type="text" name="SearchKey" placeholder="جستجو">
+                                        <button type="submit"><i class='fa fa-search'></i></button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- mobile-menu-area start -->
+
+<div class="mobile-menu-area hidden-md hidden-lg">
+    <div class="fluid-container">
+        <div class="mobile-menu clearfix">
+            <div class="search-wrap mobile-search">
+                <div class="mobile-search-btn"><i class="fa fa-search"></i></div>
+                <div class="mobile-search-form">
+                    <form action="#">
+                        <input type="text" placeholder="جستجو">
+                        <button type="submit"><i class='fa fa-search'></i></button>
+                    </form>
+                </div>
+            </div>
+            <nav id="mobile_dropdown">
+                <ul>
+                    @foreach (var itemMenu in Model)
+                    {
+                        <li class="current drop">
+                            <a href="#">@itemMenu.Name</a>
+                            <ul class="dropdown">
+                                @foreach (var itemChildMenu in itemMenu.ChildMenus)
+                                {
+                                    <li><a href="/News/Index?ChildMenuId=@itemChildMenu.Id"> @itemChildMenu.Name </a></li>
+                                }
+                            </ul>
+                        </li>
+                    }
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+<!-- mobile-menu-area end -->

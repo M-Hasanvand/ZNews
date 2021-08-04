@@ -1,0 +1,278 @@
+﻿@using MD.PersianDateTime.Core;
+@using ZNews.Application.Services.Users.Queries.GetProfileUserForAdmin;
+@model ResultProfileUserForAdminDto
+@{
+    ViewData["Title"] = " پروفایل ادمین برای مدیر سایت";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+<section id="user-area">
+    <div class="row">
+        <div class="col-xl-6 col-lg-12">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <div class="card-title-wrap bar-primary">
+                        <div class="card-title">اطلاعات شخصی</div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="card-block">
+                        <div class="align-self-center halfway-fab text-center">
+                            @if (!string.IsNullOrWhiteSpace(Model.ImageUrl))
+                            {
+                                <a class="profile-image">
+                                    <img src="~/@Model.ImageUrl" class="rounded-circle img-border gradient-summer width-100" alt="Card image">
+                                </a>
+                            }
+                            else
+                            {
+                                <a class="profile-image">
+                                    <img src="/Images/AdminImage/Default.jpg" class="rounded-circle img-border gradient-summer width-100" alt="Card image">
+                                </a>
+                            }
+                        </div>
+                        <div class="text-center">
+                            <span class="font-medium-2 text-uppercase">@Model.FullName</span>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 col-sm-6">
+                                <ul class="no-list-style pr-0 text-center">
+                                    <li class="mb-2">
+                                        <span class="text-bold-500 primary"><a><i class="icon-moustache font-small-3"></i> سن  :</a></span>
+                                        @if (Model.Age <= 0)
+                                        {
+                                            <span class="display-block overflow-hidden">ثبت نشده</span>
+                                        }
+                                        else
+                                        {
+                                            @Model.Age
+                                        }
+                                    </li>
+                                    <li class="mb-2">
+                                        <span class="text-bold-500 primary"><a><i class="ft-user font-small-3"></i> جنسیت:</a></span>
+                                        @if (Model.Gender == true)
+                                        {
+                                            <script>Isgender(true)</script>
+                                            <span class="display-block overflow-hidden">مرد</span>
+                                        }
+                                        else
+                                        {
+                                            <script>Isgender(false)</script>
+                                            <span class="display-block overflow-hidden">زن</span>
+                                        }
+                                    </li>
+                                    <li class="mb-2">
+                                        <span class="text-bold-500 primary"><a><i class="ft-briefcase font-small-3"></i>سمت : </a></span>
+                                        @foreach (var item in Model.Roles)
+                                        {
+                                            <span class="display-block overflow-hidden">@item.DisplayName </span>
+                                        }
+                                    </li>
+                                    <li class="mb-2">
+                                        <span class="text-bold-500 primary"><a><i class="ft-book font-small-3"></i> تاریخ عضویت:</a></span>
+                                        <span class="display-block overflow-hidden">
+                                            @{
+                                                PersianDateTime persianDate = new PersianDateTime(Model.InsertTime);
+                                                var insertTime = persianDate.ToString("yyyy/MM/dd");
+                                            }
+                                            @insertTime
+                                        </span>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="col-12 col-sm-6">
+                                <ul class="no-list-style pr-0 text-center">
+                                    <li class="mb-2">
+                                        <span class="text-bold-500 primary"><a><i class="ft-globe font-small-3"></i> آدرس :</a></span>
+                                        @if (!string.IsNullOrWhiteSpace(Model.Address))
+                                        {
+                                            <span class="display-block overflow-hidden">@Model.Address</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="display-block overflow-hidden">ثبت نشده</span>
+                                        }
+                                    </li>
+                                    <li class="mb-2">
+                                        <span class="text-bold-500 primary"><a><i class="icon-calendar font-small-3"></i> شماره ملی :</a></span>
+                                        <span class="display-block overflow-hidden">@Model.NationalNumber</span>
+                                    </li>
+                                    <li class="mb-2">
+                                        <span class="text-bold-500 primary"><a><i class="ft-smartphone font-small-3"></i> شماره تماس :</a></span>
+                                        <span class="display-block overflow-hidden">@Model.MobileNumber</span>
+                                    </li>
+                                    <li class="mb-2">
+                                        <span class="text-bold-500 primary"><a><i class="ft-mail font-small-3"></i> ایمیل :</a></span>
+                                        <a class="display-block overflow-hidden">@Model.Email</a>
+                                    </li>
+                                </ul>
+                            </div>
+                            @foreach (var role in ZNews.EndPoint.Utilities.ClaimUtility.GetRoles(User))
+                            {
+                                if (role == ZNews.Common.Roles.UserRole.Admin)
+                                {
+                                    <div class="col-12 text-center">
+                                        <a class="btn btn-info" onclick="showEditModal()">ویرایش مشخصات</a>
+                                    </div>
+                                }
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-6 col-lg-12">
+            <!--About div starts-->
+            <div id="about">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="card-block">
+                                    <div class="mb-3">
+                                        <span class=" mb-1 text-bold-500 primary">درباره ی من:</span>
+                                        <span class="display-block overflow-hidden">
+                                            <p class="textalign">
+                                                @if (!string.IsNullOrWhiteSpace(Model.About))
+                                                {
+                                                    @Model.About
+                                                }
+                                                else
+                                                {
+                                                    @:ثبت نشده
+                                                }
+                                            </p>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--About div ends-->
+        </div>
+    </div>
+</section>
+@section Modal
+{
+    <div class="modal fade rtl" id="EditProfileModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">ویرایش مشخصات ادمین</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body row">
+                    <div class="col-xl-12 col-lg-6 col-md-12 mb-1">
+                        <fieldset class="form-group">
+                            @if (!string.IsNullOrWhiteSpace(Model.ImageUrl))
+                            {
+                                <img src="~/@Model.ImageUrl" class="rounded-circle img-border gradient-summer width-100" alt="image">
+                            }
+                            else
+                            {
+                                <img src="/Images/AdminImage/Default.jpg" class="rounded-circle img-border gradient-summer width-100" alt="Card image">
+                            }
+                            <input type="file" class="form-control-file" id="image" />
+                        </fieldset>
+                    </div>
+                    <div class="col-xl-6 col-lg-6 col-md-12 mb-1">
+                        <fieldset class="form-group">
+                            <label for="basicInput">نام و نام خانوادگی</label>
+                            <input type="text" class="form-control" id="fullname" value="@Model.FullName">
+                        </fieldset>
+                    </div>
+                    <div class="col-xl-6 col-lg-6 col-md-12 mb-1">
+                        <fieldset class="form-group">
+                            <label for="helpInputTop">پست الکترونیک</label>
+                            <small class="text-muted"><i>info@Znews.net</i></small>
+                            <input type="text" class="form-control" id="email" value="@Model.Email">
+                        </fieldset>
+                    </div>
+                    <div class="col-xl-6 col-lg-6 col-md-12 mb-1">
+                        <fieldset class="form-group">
+                            <label for="disabledInput">آدرس </label>
+                            <input type="text" class="form-control" id="address" value="@Model.Address">
+                        </fieldset>
+                    </div>
+                    <div class="col-xl-6 col-lg-6 col-md-12 mb-1">
+                        <fieldset class="form-group">
+                            <label for="helpInputTop">شماره تلفن</label>
+                            <input type="number" class="form-control" id="number" max="99999999999" value="@Model.MobileNumber">
+                        </fieldset>
+                    </div>
+                    <div class="col-xl-6 col-lg-6 col-md-12 mb-1">
+                        <fieldset class="form-group">
+                            <label for="helpInputTop">شماره ملی</label>
+                            <input type="number" class="form-control" id="national" max="9999999999" value="@Model.NationalNumber">
+                        </fieldset>
+                    </div>
+                    <div class="col-xl-6 col-lg-6 col-md-12 mb-1">
+                        <fieldset class="form-group">
+                            <label for="helpInputTop">سن</label>
+                            <input type="number" class="form-control" id="age" min="1" max="150" value="@Model.Age">
+                        </fieldset>
+                    </div>
+                    <div class="col-xl-12 col-lg-6 col-md-12 mb-1">
+
+                        <fieldset class="form-group">
+                            <label for="placeTextarea">درباره</label>
+                            <textarea class="form-control" id="aboutAdmin" rows="3" placeholder="">@Model.About</textarea>
+                        </fieldset>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" data-dismiss="modal">بستن</button>
+                    <button type="button" class="btn btn-primary" onclick="EditProfileUser(@Model.Id)">ذخیره تغییرات</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+@section Scripts
+{
+    <link href="~/lib/Sweetalert2/Sweetalert2.css" rel="stylesheet" />
+    <script src="~/lib/Sweetalert2/Sweetalert2.js"></script>
+    <script>
+        function showEditModal() {
+            $("#EditProfileModal").modal("show");
+        }
+        function EditProfileUser(UserId) {
+            var postData = new FormData();
+            postData.append('Id', UserId);
+            postData.append('FullName', $("#fullname").val());
+            postData.append('Email', $("#email").val());
+            postData.append('MobileNumber', $("#number").val());
+            postData.append('NationalNumber', $("#national").val());
+            postData.append('Address', $("#address").val());
+            postData.append('Age', $("#age").val());
+            postData.append('About', $("#aboutAdmin").val());
+            var image = document.getElementById('image');
+            if (image.files.length > 0) {
+                for (var i = 0; i < image.files.length; i++) {
+                    postData.append('ImageUrl', image.files[i]);
+                }
+            }
+            $.ajax({
+                contentType: false,
+                processData: false,
+                dataType: "JSON",
+                type: "POST",
+                url: "/Admin/Users/EditProfileUser",
+                data: postData,
+                success: function (data) {
+                    if (data.isSuccess == true) {
+                        swal.fire('موفق!', data.message, 'success')
+                            .then(function (isConfirm) { window.location.reload() });
+                    }
+                    else {
+                        swal.fire('هشدار !!', data.message, 'warning');
+                    }
+                }
+            });
+        }
+    </script>
+}
+

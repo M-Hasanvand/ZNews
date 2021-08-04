@@ -1,0 +1,39 @@
+﻿
+@using ZNews.EndPoint.Areas.Admin.Models.User;
+@model MenuUserPropertisViewModel
+@{
+    Layout = null;
+}
+<li class="dropdown nav-item mr-0">
+    <a id="dropdownBasic3" href="#" data-toggle="dropdown" class="nav-link position-relative dropdown-user-link dropdown-toggle">
+        @if (!string.IsNullOrWhiteSpace(Model.ImageUrl))
+        {
+            <span class="avatar avatar-online"><img id="navbar-avatar" src="~/@Model.ImageUrl" alt="avatar" /></span>
+        }
+        else
+        {
+            <span class="avatar avatar-online"><img id="navbar-avatar" src="/Images/AdminImage/Default.jpg" alt="avatar" /></span>
+        }
+        <p class="d-none">تنظیمات کاربر</p>
+    </a>
+    <div aria-labelledby="dropdownBasic3" class="dropdown-menu dropdown-menu-left">
+        <div class="arrow_box_right">
+            <a class="dropdown-item py-1">
+                <i></i><span>@User.Identity.Name</span>
+            </a>
+            <a href="/Admin/Users/ProfileUserForUser?UserGuid=@Model.UserGuid" class="dropdown-item py-1">
+                <i class="ft-edit ml-2"></i><span>پروفایل من</span>
+            </a>
+            @foreach (var item in ZNews.EndPoint.Utilities.ClaimUtility.GetRoles(User))
+            {
+                if (item==ZNews.Common.Roles.UserRole.Admin)
+                {
+                    <a href="/Admin/Users/UserActivities?UserId=@Model.UserId" class="dropdown-item py-1">
+                        <i class="ft-settings ml-2"></i><span>فعالیت های من</span>
+                    </a>
+                }
+            }
+            <div class="dropdown-divider"></div><a href="/Admin/Authentication/Sginout" class="dropdown-item"><i class="ft-power ml-2"></i><span>خروج</span></a>
+        </div>
+    </div>
+</li>
